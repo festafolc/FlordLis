@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRouter from './src/routes/auth';
+import customerRouter from './src/routes/customer';
 
 dotenv.config({path: '.env'});
 
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/flordlis/auth', authRouter);
+app.use('/flordlis/', authRouter);
+app.use('/flordlis/customer', customerRouter);
 
 
 // Listen

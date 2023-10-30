@@ -1,4 +1,8 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import { check } from 'express-validator'
+import { formValidator } from '../middlewares/formValidator';
+import { createCustomer, loginCustomer, renewToken } from '../controllers/auth';
+import { jwtValidator } from '../middlewares/jwtValidator';
 
 
 /*
@@ -8,12 +12,32 @@ import {Router} from 'express';
 
 const authRouter = Router();
 
-authRouter.get('/', (_req, res) => {
+// Login
+authRouter.post(
+    '/login',
+    [
+        check('email', "Please, provide a valid email").isEmail(),
+        check('password', "Password is incorrect").isLength({ min: 8 }),
+        formValidator
+    ], loginCustomer);
 
-    res.json({
-        ok: true
-    })
-})
+// Register
+authRouter.post(
+    '/register',
+    [
+        check('email', "Please, provide a valid email").isEmail(),
+        check('password', "Password is incorrect").isLength({ min: 8 }),
+        formValidator
+    ]
+    , createCustomer);
+
+// Renew token
+authRouter.get(
+    '/renew',
+    [
+        jwtValidator
+    ],
+    renewToken);
 
 
 export default authRouter;
