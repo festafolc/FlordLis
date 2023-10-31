@@ -18,7 +18,7 @@ export interface Product extends RowDataPacket {
     categoryName: ECategories;
     name: string;
     description: string;
-    image: boolean;
+    image: string;
     price: string;
     numberReviews: number;
     stock: number;
