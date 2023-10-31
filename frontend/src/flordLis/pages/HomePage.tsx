@@ -33,7 +33,8 @@ export const HomePage = () => {
         <Row>
           {flordLisCategories.map((category: any) => (
             <Col key={category.id} sm={12} md={6} lg={4} xl={3}>
-              <h3 className='text-center' >{category.name}</h3>
+              {/* <h3 className='text-center' >{category.name}</h3> */}
+              <h3 className='text-center' >{category.name[0].toUpperCase() + category.name.slice(1).replace('-', ' ')}</h3>
               <CategoriesCard category={category} />
             </Col>
           ))}

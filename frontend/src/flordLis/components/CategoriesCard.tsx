@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const CategoriesCard = ({category}: any) => {
 
-    const categoryImageUrl = `../../../assets/categories/${category.name}.jpg`;
+    const categoryImageUrl = `../../../assets/categories/${category.id}.jpg`;
 
     return (
         <>

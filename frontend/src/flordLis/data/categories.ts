@@ -1,18 +1,18 @@
 export const flordLisCategories = [
     {
         'id': '1',
-        'name': 'Hogar'
+        'name': 'hogar'
     },
     {
         'id': '2',
-        'name': 'Cuidado'
+        'name': 'cuidado-personal'
     },
     {
         'id': '3',
-        'name': 'Jabones'
+        'name': 'jabones'
     },
     {
         'id': '4',
-        'name': 'Accesorios'
+        'name': 'accesorios'
     }
 ];
