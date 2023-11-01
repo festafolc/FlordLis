@@ -3,14 +3,14 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export interface AuthState {
 
     status: string;
-    user: {};
-    errorMessage: undefined
+    userId?: number;
+    errorMessage: string
 }
 
 const initialState: AuthState = {
     status: 'checking',
-    user: {},
-    errorMessage: undefined
+    userId: undefined,
+    errorMessage: ''
 }
 
 export const authSlice = createSlice({
@@ -19,15 +19,24 @@ export const authSlice = createSlice({
     reducers: {
         onChecking: (state) => {
             state.status = 'checking';
-            state.user = {};
-            state.errorMessage = undefined;
+            state.userId = undefined;
+            state.errorMessage = '';
         },
-        onLogin: (state, action: PayloadAction<AuthState["user"]>) => {
+        onLogin: (state, action: PayloadAction<AuthState["userId"]>) => {
             state.status = 'authenticated';
-            state.user = action.payload;
-            state.errorMessage = undefined;
+            state.userId = action.payload;
+            state.errorMessage = '';
+        },
+        onLogout: (state, action: PayloadAction<AuthState["errorMessage"]>) => {
+            state.status = 'not-authenticated';
+            state.userId = undefined,
+            state.errorMessage = action.payload;
+        },
+        onClearErrorMessage: (state) => {
+            state.errorMessage = '';
         }
+
     }
 });
 
-export const { onChecking, onLogin } = authSlice.actions;
+export const { onChecking, onLogin, onLogout, onClearErrorMessage } = authSlice.actions;

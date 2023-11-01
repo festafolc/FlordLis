@@ -7,7 +7,7 @@ import { Customer } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
-    const { email, password } = req.body;
+    const { email, password, activeNotifications } = req.body;
 
     try {
 
@@ -16,15 +16,15 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
 
         if (result != null) {
 
-            const customer: Customer = result[0][0];
+            const customer: Customer = result[0][0]; 
 
             if (customer == null) {
 
                 const salt = bcrypt.genSaltSync(15);
                 const encrypted = bcrypt.hashSync(password, salt);
 
-                const newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (email, password, isDeleted)
-                                                                             VALUES ("${email}", "${encrypted}", ${false});`);
+                const newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (email, password, activeNotifications, isDeleted)
+                                                                              VALUES ("${email}", "${encrypted}", ${activeNotifications}, ${false});`);
 
                 if (newCustomer != null) {
 
@@ -37,6 +37,7 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                         return res.status(201).json({
                             ok: true,
                             msg: 'register',
+                            id,
                             email,
                             encrypted,
                             token
@@ -119,7 +120,7 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
 
                     return res.status(400).json({
                         ok: false,
-                        msg: 'Please, provide a valid email and password',
+                        msg: 'Credentials are not valid.',
                     });
                 }
 
@@ -128,7 +129,7 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
 
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Please, provide a valid email and password',
+                    msg: 'Credentials are not valid.',
                 });
             }
         }

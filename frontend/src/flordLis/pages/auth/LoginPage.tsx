@@ -1,10 +1,9 @@
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useForm } from "../../../hooks/useForm";
-// import { loginThunk } from "../../../redux/thunks/authThunks";
-import { useFlordLisDispatch } from "../../../hooks/useFlordLis";
+import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import flordLisApi from "../../../apis/flordLisApi";
-import { onLogin } from "../../../redux/slices/authSlice";
-import { loginThunk } from "../../../redux/thunks/authThunks";
+import { useForm } from "../../../hooks/useForm";
+import { useFlordLisDispatch, useFlordLisSelector } from "../../../hooks/useFlordLis";
+import { loginThunk, logoutThunk } from "../../../redux/thunks/authThunks";
+import { useEffect, useState } from "react";
 
 const loginFormFields: {} = {
 
@@ -13,6 +12,10 @@ const loginFormFields: {} = {
 }
 
 export const LoginPage = () => {
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const { errorMessage } = useFlordLisSelector((state) => state.auth);
 
   const dispatch = useFlordLisDispatch();
 
@@ -28,18 +31,14 @@ export const LoginPage = () => {
 
       if (data.ok) {
 
+        dispatch(loginThunk(data.customer));
+
         localStorage.setItem('token', data.token);
         localStorage.setItem('token-init-date', new Date().getTime().toString());
-
-        dispatch(loginThunk(data.customer));
       }
-
-
-      console.log(data);
-
     } catch (error) {
 
-      console.log(error);
+      dispatch(logoutThunk('Credentials are not valid.'));
     }
     finally {
 
@@ -47,8 +46,32 @@ export const LoginPage = () => {
     }
   }
 
+  useEffect(() => {
+
+    if (errorMessage?.length > 0) {
+
+      setShowModal(true);
+    }
+  }, [errorMessage]);
+
+  const onCloseErrorMessage = () => {
+
+    setShowModal(false);
+  }
+
   return (
     <>
+    {showModal && 
+      <div className="modal position-absolute justify-content-center align-items-center" style={{display: 'block'}}>
+        <Modal.Dialog>
+          <Modal.Body>
+            <p>Credentials are not valid.</p>
+            <Button variant="secondary" onClick={onCloseErrorMessage}>Close</Button>
+          </Modal.Body>
+        </Modal.Dialog>
+      </div>
+      }
+
       <Container className="position-relative">
         <Row className="h1 justify-content-center align-items-center mt-5">
           Flor d' Lis
