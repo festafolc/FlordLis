@@ -4,6 +4,8 @@ import { useForm } from "../../../hooks/useForm";
 import { useFlordLisDispatch, useFlordLisSelector } from "../../../hooks/useFlordLis";
 import { loginThunk, logoutThunk } from "../../../redux/thunks/authThunks";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { CustomerBasicInfo } from '../../../../../backend/types';
 
 const loginFormFields: {} = {
 
@@ -12,6 +14,8 @@ const loginFormFields: {} = {
 }
 
 export const LoginPage = () => {
+
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -27,14 +31,17 @@ export const LoginPage = () => {
 
     try {
 
-      const { data } = await flordLisApi.post('/login', { email, password });
+      const { data }: {data: CustomerBasicInfo} = await flordLisApi.post('/login', { email, password });
 
       if (data.ok) {
 
-        dispatch(loginThunk(data.customer));
+        dispatch(loginThunk(data.id));
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('token-init-date', new Date().getTime().toString());
+
+        //TODO: en vez de enviar al home page mejor enviarlo a donde estaba
+        navigate("/");
       }
     } catch (error) {
 

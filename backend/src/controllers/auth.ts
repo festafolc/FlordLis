@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 import bcrypt from 'bcryptjs';
 import dbConnection from '../database/config';
 import { createJWT } from '../helpers/jwt';
-import { Customer } from '../../types';
+import { CustomerBasicInfo } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
@@ -12,11 +12,11 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
     try {
 
         const connection = await dbConnection();
-        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        const result = await connection?.query<CustomerBasicInfo[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
 
         if (result != null) {
 
-            const customer: Customer = result[0][0]; 
+            const customer: CustomerBasicInfo = result[0][0];
 
             if (customer == null) {
 
@@ -30,20 +30,22 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
 
                     const id = newCustomer[0].insertId;
 
-                    if (id) {
+                    const newCustomerFullInfo = await connection?.query<ResultSetHeader>(`INSERT INTO Customers_Information (user_id, name, surname, phone, country, city, postal_code, address)
+                                                                                          VALUES (${id}, "", "", "", "", "", "", "");`);
+                    if (newCustomerFullInfo != null) {
 
-                        const token = await createJWT(id.toString());
 
-                        return res.status(201).json({
-                            ok: true,
-                            msg: 'register',
-                            id,
-                            email,
-                            encrypted,
-                            token
-                        });
+                            const token = await createJWT(id.toString());
+
+                            return res.status(201).json({
+                                ok: true,
+                                msg: 'register',
+                                id,
+                                token
+                            });
                     }
                     else {
+
                         return res.status(500).json({
                             ok: false,
                             msg: 'An expected error occurred.'
@@ -57,6 +59,7 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                         msg: 'An expected error occurred.'
                     });
                 }
+
             }
             else {
 
@@ -87,16 +90,15 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
 
     const { email, password } = req.body;
 
-
     try {
         // `SELECT sub.id, sub.email, sub.password, sub.isDeleted, date_format(sub.createdAt, '%b %d %Y')
         // FROM (SELECT id, email, password, isDeleted, createdAt FROM Customers WHERE email = "${email}") as sub;`
         const connection = await dbConnection();
-        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        const result = await connection?.query<CustomerBasicInfo[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
 
         if (result != null) {
 
-            const customer: Customer = result[0][0];
+            const customer: CustomerBasicInfo = result[0][0];
 
             if (customer != null) {
 
@@ -107,12 +109,15 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
                     const now = new Date(Date.now() + 1 * (60 * 60 * 1000)).toISOString().slice(0, 19).replace('T', ' ');
                     await connection?.query(`UPDATE Customers SET lastLogin="${now}" WHERE email = "${email}";`);
 
-                    const token = await createJWT(customer.id.toString());
+                    const id = customer.id;
+
+                    const token = await createJWT(id.toString());
 
                     return res.status(200).json({
+                        
                         ok: true,
                         msg: 'login',
-                        customer,
+                        id,
                         token
                     });
                 }

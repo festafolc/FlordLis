@@ -1,13 +1,22 @@
-import { Container, Dropdown, DropdownButton, Nav, Navbar } from 'react-bootstrap';
+import { Container, Dropdown, DropdownButton, Nav, Navbar, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Calendar2EventFill, CartDashFill, Flower3, PersonFillCheck, ShopWindow } from 'react-bootstrap-icons';
 import { DropdownLogin } from './DropdownLogin';
 import logo from '../../assets/images/logo.png';
-import { useFlordLisSelector } from '../../hooks/useFlordLis';
+import { useFlordLisDispatch, useFlordLisSelector } from '../../hooks/useFlordLis';
+import { AuthState } from '../../redux/slices/authSlice';
+import { logoutThunk } from '../../redux/thunks/authThunks';
 
 export const NavBar = () => {
 
-    const {isLogged} = useFlordLisSelector((state) => state.flordLis);
+    const { status } = useFlordLisSelector<AuthState>((state) => state.auth);
+
+    const dispatch = useFlordLisDispatch();
+    
+    const logout = () => {
+
+        dispatch(logoutThunk(''));
+    }
 
     return (
         <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
@@ -33,11 +42,15 @@ export const NavBar = () => {
                         <LinkContainer to="/cart">
                             <Nav.Link><CartDashFill /> Carrito</Nav.Link>
                         </LinkContainer>
-                        {   (isLogged)
+                        {(status === 'authenticated')
                             ?
-                            <LinkContainer to="/profile/information">
-                                <Nav.Link><PersonFillCheck /> Perfil</Nav.Link>
-                            </LinkContainer>
+                            <Nav>
+                                <LinkContainer to="/profile/information">
+                                    <Nav.Link><PersonFillCheck /> Perfil</Nav.Link>
+                                </LinkContainer>
+                                <Button onClick={logout}>Log out</Button>
+                            </Nav>
+
                             :
                             <DropdownButton id="dropdown-login-button" title="Iniciar sesión" autoClose="outside">
                                 <Dropdown.Item><DropdownLogin /></Dropdown.Item>

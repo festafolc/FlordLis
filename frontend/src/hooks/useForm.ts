@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const useForm = ({initialForm = {}}: any) => {
+export const useForm = (initialForm: any) => {
 
     const [formState, setFormState] = useState<any>(initialForm);
     // const [formValidation, setFormValidation] = useState<any>({});
@@ -9,9 +9,9 @@ export const useForm = ({initialForm = {}}: any) => {
     //     createValidators();
     // }, [formState])
 
-    // useEffect(() => {
-    //     setFormState(initialForm);
-    // }, [initialForm])
+    useEffect(() => {
+        setFormState(initialForm);
+    }, [])
 
 
     // const isFormValid = useMemo(() => {

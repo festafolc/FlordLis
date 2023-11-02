@@ -1,17 +1,13 @@
 import { Button, Container, Form } from 'react-bootstrap';
-import { useFlordLisDispatch, useFlordLisSelector } from '../../hooks/useFlordLis';
-import { actionLogin } from '../../redux/slices/flordLisSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const DropdownLogin = () => {
 
-    const flordLisDispatch = useFlordLisDispatch();
-    const {isLogged} = useFlordLisSelector((state) => state.flordLis)
-
-
+    const navigate = useNavigate();
 
     const onLogin = () => {
         
-        flordLisDispatch(actionLogin(isLogged));
+        navigate('/auth/login');
     }
 
     return (

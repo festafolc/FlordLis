@@ -1,8 +1,10 @@
 import {Router} from 'express';
-// import { createCustomer } from '../controllers/customer';
+import { updateCustomerInfoById, getCustomerFullInfoById } from '../controllers/customer';
 
 const customerRouter = Router();
 
-// customerRouter.post('/register', createCustomer);
+customerRouter.get('/:id', getCustomerFullInfoById);
+
+customerRouter.put('/:id', updateCustomerInfoById);
 
 export default customerRouter;
