@@ -1,27 +1,23 @@
 import { RowDataPacket } from "mysql2/promise";
 import { ECategories } from "./src/enums/ECategory";
 
-export interface CustomerBasicInfo extends RowDataPacket {
+export interface Customer extends RowDataPacket {
 
     id: number;
-    isDeleted: boolean;
-    createdAt: string;
-    updatedAt?: string;
-    lastLogin: string;
-}
-
-export interface CustomerFullInfo extends RowDataPacket {
-
-    basicInfo: CustomerBasicInfo;
-    email: string;
-    password: string;
     name: string;
     surname: string;
     phone: string;
+    email: string;
+    password: string;
     country: string;
     city: string;
-    postal_code: string;
     address: string
+    postal_code: string;
+    activeNotifications: boolean;
+    isDeleted: boolean;
+    lastLogin: string;
+    createdAt: string;
+    updatedAt?: string;
 }
 
 export interface Product extends RowDataPacket {

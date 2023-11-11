@@ -1,23 +1,26 @@
-import { Alert, Button, Col, Container, Form, Row, Modal } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Modal } from 'react-bootstrap';
 import { useForm } from '../../hooks/useForm';
 import flordLisApi from '../../apis/flordLisApi';
-import { useFlordLisSelector } from '../../hooks/useFlordLis';
+import { useFlordLisDispatch, useFlordLisSelector } from '../../hooks/useFlordLis';
 import { AuthState } from '../../redux/slices/authSlice';
-import { useState } from 'react';
+import { ChangePassword } from './ChangePassword';
+import { CustomerState, onCustomerInformationWasUpdated, onUpdateCustomerInformation } from '../../redux/slices/customerSlice';
+import { changePasswordThunk } from '../../redux/thunks/customerThunks';
 
 
 
 export const BasicInformation = ({ customerFullInfo }: any) => {
 
+    const dispatch = useFlordLisDispatch();
     const { userId } = useFlordLisSelector<AuthState>((state) => state.auth);
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const { checkingPassword, updateCustomer } = useFlordLisSelector<CustomerState>((state) => state.customer);
 
     const profileInfo = {
 
         name: customerFullInfo.name,
         surname: customerFullInfo.surname,
         phone: customerFullInfo.phone,
-        email: 'alejandro@macedonia.com',
+        email: customerFullInfo.email,
         country: customerFullInfo.country,
         city: customerFullInfo.city,
         postalCode: customerFullInfo.postal_code,
@@ -40,32 +43,38 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
 
             if (data.ok) {
 
-                setShowModal(true);
+                dispatch(onUpdateCustomerInformation());
             }
         } catch (error) {
 
-            console.log(error);
+            dispatch(onCustomerInformationWasUpdated());
         }
     }
 
     const onCloseModal = () => {
 
-        setShowModal(false);
+        dispatch(onCustomerInformationWasUpdated());
+    }
+
+    const handlePasswordOpen = () => {
+
+        dispatch(changePasswordThunk());
     }
 
     return (
         <>
+            <Modal show={updateCustomer} onHide={onCloseModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Perfil actualizado</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>La información ha sido guardado con éxito.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
+                </Modal.Footer>
+            </Modal>
 
-            {showModal &&
-                <div className="modal position-absolute justify-content-center align-items-center" style={{ display: 'block' }}>
-                    <Modal.Dialog>
-                        <Modal.Body>
-                            <p>Actualizado</p>
-                            <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
-                        </Modal.Body>
-                    </Modal.Dialog>
-                </div>
-            }
             <Container className='mx-5' >
                 <Container className='mx-5' style={{ width: '55rem' }}>
                     <Form onSubmit={saveSubmit}>
@@ -104,7 +113,7 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                             <Col className='mt-2'><strong>Correo electrónico</strong></Col>
                             <Col>
                                 <Form.Group controlId="formEmail">
-                                    <Form.Control className='form-control-plaintext' readOnly type="email" name="email" value={email || ''} onChange={onInputChange} />
+                                    <Form.Control className='form-control-plaintext' readOnly type="email" name="email" value={email || ''} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -152,7 +161,7 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
 
                         <Row>
                             <Col>
-                                <Button>Cambiar Contraseña</Button>
+                                <Button onClick={handlePasswordOpen}>Cambiar Contraseña</Button>
                             </Col>
                             <Col>
                                 <Button className='bg-secondary' type='submit'>
@@ -161,6 +170,15 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                             </Col>
                         </Row>
                     </Form>
+
+                    {/* Change Password */}
+                    {
+                        (checkingPassword)
+                            ? <ChangePassword />
+                            : null
+                    }
+
+
                 </Container>
             </Container>
         </>

@@ -9,7 +9,7 @@ import { AuthState } from "../../../redux/slices/authSlice"
 export const ProfileInformationPage = () => {
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [customerFullInfo, setCustomerFullInfo] = useState({})
+  const [customerFullInfo, setCustomerFullInfo] = useState({});
 
   const { userId } = useFlordLisSelector<AuthState>((state) => state.auth);
 
@@ -26,7 +26,7 @@ export const ProfileInformationPage = () => {
     try {
 
       const result = await flordLisApi.get('/customer/' + id);
-
+      
       setCustomerFullInfo(result.data);
       setIsLoaded(true);
 

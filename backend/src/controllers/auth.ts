@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 import bcrypt from 'bcryptjs';
 import dbConnection from '../database/config';
 import { createJWT } from '../helpers/jwt';
-import { CustomerBasicInfo } from '../../types';
+import { Customer } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
@@ -12,11 +12,11 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
     try {
 
         const connection = await dbConnection();
-        const result = await connection?.query<CustomerBasicInfo[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
 
         if (result != null) {
 
-            const customer: CustomerBasicInfo = result[0][0];
+            const customer: Customer = result[0][0];
 
             if (customer == null) {
 
@@ -30,27 +30,14 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
 
                     const id = newCustomer[0].insertId;
 
-                    const newCustomerFullInfo = await connection?.query<ResultSetHeader>(`INSERT INTO Customers_Information (user_id, name, surname, phone, country, city, postal_code, address)
-                                                                                          VALUES (${id}, "", "", "", "", "", "", "");`);
-                    if (newCustomerFullInfo != null) {
+                    const token = await createJWT(id.toString());
 
-
-                            const token = await createJWT(id.toString());
-
-                            return res.status(201).json({
-                                ok: true,
-                                msg: 'register',
-                                id,
-                                token
-                            });
-                    }
-                    else {
-
-                        return res.status(500).json({
-                            ok: false,
-                            msg: 'An expected error occurred.'
-                        });
-                    }
+                    return res.status(201).json({
+                        ok: true,
+                        msg: 'register',
+                        id,
+                        token
+                    });
                 }
                 else {
 
@@ -94,11 +81,11 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
         // `SELECT sub.id, sub.email, sub.password, sub.isDeleted, date_format(sub.createdAt, '%b %d %Y')
         // FROM (SELECT id, email, password, isDeleted, createdAt FROM Customers WHERE email = "${email}") as sub;`
         const connection = await dbConnection();
-        const result = await connection?.query<CustomerBasicInfo[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
 
         if (result != null) {
 
-            const customer: CustomerBasicInfo = result[0][0];
+            const customer: Customer = result[0][0];
 
             if (customer != null) {
 
@@ -114,7 +101,7 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
                     const token = await createJWT(id.toString());
 
                     return res.status(200).json({
-                        
+
                         ok: true,
                         msg: 'login',
                         id,
@@ -156,6 +143,58 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
 
 }
 
+
+export const checkPassword = async (req: Request, res: Response): Promise<Response> => {
+
+    const { id } = req.params;
+    const { password } = req.body;
+
+    try {
+        
+        const connection = await dbConnection();
+        const result = await connection?.query<ResultSetHeader[]>(`SELECT password FROM Customers WHERE id = "${id}";`);
+        
+        if (result != null) {
+
+            const currentPassword: string = Object.values(result[0][0])[0];
+
+            const validPassword: boolean = await bcrypt.compare(password, currentPassword);
+
+            if (validPassword) {
+
+                return res.status(200).json({
+                    ok: true,
+                    msg: 'Right',
+                    valid: validPassword
+                });
+            }
+            else {
+
+                return res.status(200).json({
+                    ok: false,
+                    msg: 'It is not valid',
+                    valid: validPassword
+                });
+            }
+        }
+        else {
+
+            return res.status(400).json({
+                ok: false,
+                msg: 'Bad request.'
+            });
+        }
+    }
+    catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'An expected error occurred.'
+        });
+    }
+
+}
+
 export const renewToken = async (req: Request, res: Response) => {
 
     const { id }: { id: string } = req.body;
@@ -169,3 +208,4 @@ export const renewToken = async (req: Request, res: Response) => {
         id
     })
 }
+

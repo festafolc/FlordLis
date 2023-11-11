@@ -5,7 +5,7 @@ import { useFlordLisDispatch, useFlordLisSelector } from "../../../hooks/useFlor
 import { loginThunk, logoutThunk } from "../../../redux/thunks/authThunks";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomerBasicInfo } from '../../../../../backend/types';
+import { Customer } from '../../../../../backend/types';
 
 const loginFormFields: {} = {
 
@@ -31,7 +31,7 @@ export const LoginPage = () => {
 
     try {
 
-      const { data }: {data: CustomerBasicInfo} = await flordLisApi.post('/login', { email, password });
+      const { data }: {data: Customer} = await flordLisApi.post('/login', { email, password });
 
       if (data.ok) {
 

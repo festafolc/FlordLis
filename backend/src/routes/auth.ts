@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator'
 import { formValidator } from '../middlewares/formValidator';
-import { createCustomer, loginCustomer, renewToken } from '../controllers/auth';
+import { checkPassword, createCustomer, loginCustomer, renewToken } from '../controllers/auth';
 import { jwtValidator } from '../middlewares/jwtValidator';
 
 
@@ -30,6 +30,15 @@ authRouter.post(
         formValidator
     ]
     , createCustomer);
+
+// Check password
+authRouter.post(
+    '/check-password/:id',
+    [
+        check('password', "Please, provide the password").notEmpty(),
+        formValidator
+    ]
+    , checkPassword);
 
 // Renew token
 authRouter.get(
