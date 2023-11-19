@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import dbConnection from "../database/config";
 import { Customer } from "../../types";
 import bcrypt from 'bcryptjs';
+import { ResultSetHeader } from 'mysql2';
 
 
 export const getCustomerFullInfoById = async (req: Request, res: Response) => {
@@ -20,7 +21,7 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 
             if (customer != null) {
 
-                const { name, surname, phone, email, country, city, address, postal_code } = customer;
+                const { name, surname, phone, email, country, city, address, postal_code, activeNotifications } = customer;
 
                 res.status(200).json({
 
@@ -33,7 +34,8 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
                     country,
                     city,
                     address,
-                    postal_code
+                    postal_code,
+                    activeNotifications
                 });
             }
         }
@@ -59,7 +61,7 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 export const updateCustomerInfoById = async (req: Request, res: Response) => {
 
     const { id } = req.params;
-    const { name, surname, phone, country, city, postalCode, address } = req.body;
+    const { name, surname, phone, country, city, address, postalCode, activeNotifications } = req.body;
 
     try {
 
@@ -67,20 +69,34 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
 
         const updatedAt = new Date(Date.now() + 1 * (60 * 60 * 1000)).toISOString().slice(0, 19).replace('T', ' ');
 
-        const result = await connection?.query(`UPDATE Customers
-                                                SET name="${name}", surname="${surname}", phone="${phone}",
-                                                    country="${country}", city="${city}", postal_code="${postalCode}",
-                                                    address="${address}", updatedAt="${updatedAt}"
-                                                WHERE id = "${id}";`);
+        const result = await connection?.query<ResultSetHeader>(`UPDATE Customers
+                                                                 SET name="${name}", surname="${surname}", phone="${phone}",
+                                                                     country="${country}", city="${city}", 
+                                                                     address="${address}", postal_code="${postalCode}",
+                                                                     activeNotifications=${activeNotifications},
+                                                                     updatedAt="${updatedAt}"
+                                                                 WHERE id = "${id}";`);
 
         if (result != null) {
 
-            res.status(200).json({
+            if (result[0].affectedRows > 0) {
 
-                ok: true,
-                msg: 'Customer information has been updated.',
-                updatedAt
-            });
+                res.status(200).json({
+
+                    ok: true,
+                    msg: 'Customer information has been updated.',
+                    updatedAt
+                });
+            }
+            else {
+
+                res.status(400).json({
+
+                    ok: false,
+                    msg: 'Customer information has not been updated.',
+                    updatedAt
+                });
+            }
         }
 
     } catch (error) {
@@ -88,7 +104,8 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
         res.status(500).json({
 
             ok: false,
-            msg: 'An expected error occurred.'
+            msg: 'An expected error occurred.',
+            error
         });
     }
 }

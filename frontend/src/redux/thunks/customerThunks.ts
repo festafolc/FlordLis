@@ -1,4 +1,4 @@
-import { onChangePassword, onChangePasswordWasUpdated, onCustomerInformationWasUpdated, onUpdateCustomerInformation } from "../slices/customerSlice";
+import { onChangePassword, onChangePasswordWasUpdated, onCustomerInformationWasUpdatedOrNot, onUpdateCustomerInformation } from "../slices/customerSlice";
 import { FlordLisDispatch } from '../store';
 
 
@@ -14,7 +14,7 @@ export const updateCustomerFinishedThunk = () => {
 
     return (dispatch: FlordLisDispatch) => {
 
-        dispatch(onCustomerInformationWasUpdated());
+        dispatch(onCustomerInformationWasUpdatedOrNot());
     }
 }
 

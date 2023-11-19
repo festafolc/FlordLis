@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap"
-import { ProductCard } from "../components/ProductCard"
-import { getProductByCategory } from "../helpers/getProductByCategory";
+import { ProductCard } from "../../components/ProductCard"
+import { getProductByCategory } from "../../helpers/getProductByCategory";
 
 export const ShopPage = () => {
 

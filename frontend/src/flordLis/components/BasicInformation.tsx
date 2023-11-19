@@ -1,19 +1,19 @@
+import { useState } from 'react';
 import { Button, Col, Container, Form, Row, Modal } from 'react-bootstrap';
 import { useForm } from '../../hooks/useForm';
 import flordLisApi from '../../apis/flordLisApi';
 import { useFlordLisDispatch, useFlordLisSelector } from '../../hooks/useFlordLis';
 import { AuthState } from '../../redux/slices/authSlice';
 import { ChangePassword } from './ChangePassword';
-import { CustomerState, onCustomerInformationWasUpdated, onUpdateCustomerInformation } from '../../redux/slices/customerSlice';
+import { CustomerState, onUpdatePhoneError, onCustomerInformationWasUpdatedOrNot, onUpdateCustomerInformation } from '../../redux/slices/customerSlice';
 import { changePasswordThunk } from '../../redux/thunks/customerThunks';
-
 
 
 export const BasicInformation = ({ customerFullInfo }: any) => {
 
     const dispatch = useFlordLisDispatch();
     const { userId } = useFlordLisSelector<AuthState>((state) => state.auth);
-    const { checkingPassword, updateCustomer } = useFlordLisSelector<CustomerState>((state) => state.customer);
+    const { checkingPassword, updateCustomer, updateCustomerPhone } = useFlordLisSelector<CustomerState>((state) => state.customer);
 
     const profileInfo = {
 
@@ -25,11 +25,13 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
         city: customerFullInfo.city,
         postalCode: customerFullInfo.postal_code,
         address: customerFullInfo.address,
+        activeNotifications: customerFullInfo.activeNotifications,
         onInputChange: customerFullInfo.address
     }
 
-    const { name, surname, phone, email, country, city, postalCode, address, onInputChange } = useForm(profileInfo);
+    const [activeNotifications, setActiveNotifications] = useState<boolean>(customerFullInfo.activeNotifications);
 
+    const { name, surname, phone, email, country, city, postalCode, address, onInputChange } = useForm(profileInfo);
 
     // TODO: Crear un boolean para saber si se ha cambiado algo y así guardar de momento lo hago todo a saco
 
@@ -39,21 +41,29 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
 
         try {
 
-            const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, phone, country, city, postalCode, address });
+            const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, phone, country, city, postalCode, address, activeNotifications });
 
             if (data.ok) {
 
                 dispatch(onUpdateCustomerInformation());
             }
-        } catch (error) {
+        } catch (error: any) {
 
-            dispatch(onCustomerInformationWasUpdated());
+            if ( error.response.data.error.code === 'ER_DUP_ENTRY') {
+                
+                dispatch(onUpdatePhoneError());
+            }
         }
     }
 
+    const onActiveNotificationsChange = () => {
+
+        setActiveNotifications(!activeNotifications);
+      }
+
     const onCloseModal = () => {
 
-        dispatch(onCustomerInformationWasUpdated());
+        dispatch(onCustomerInformationWasUpdatedOrNot());
     }
 
     const handlePasswordOpen = () => {
@@ -65,10 +75,22 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
         <>
             <Modal show={updateCustomer} onHide={onCloseModal} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Perfil actualizado</Modal.Title>
+                    <Modal.Title>Perfil actualizado </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p>La información ha sido guardado con éxito.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={updateCustomerPhone} onHide={onCloseModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error en el guardado de la información </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>EL número de teléfono no es válido.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
@@ -154,6 +176,16 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                             <Col>
                                 <Form.Group controlId="formAddress">
                                     <Form.Control className='form-control-plaintext' type="text" name="address" value={address || ''} onChange={onInputChange} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <hr />
+
+                        <Row>
+                            <Col className='mt-2'><strong>Notificaciones activas</strong></Col>
+                            <Col className='mt-2'>
+                                <Form.Group controlId="formNotifications">
+                                    <Form.Check type="checkbox" name="activeNotifications" checked={activeNotifications} onChange={onActiveNotificationsChange} label="Deseo recibir emails con novedades" />
                                 </Form.Group>
                             </Col>
                         </Row>

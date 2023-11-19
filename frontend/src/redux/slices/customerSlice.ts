@@ -5,45 +5,53 @@ export interface CustomerState {
     updateCustomer: boolean;
     checkingPassword: boolean;
     changingPassword: boolean;
+    updateCustomerPhone: boolean;
 }
 
 const initialState: CustomerState = {
 
     updateCustomer: false,
     checkingPassword: false,
-    changingPassword: false
+    changingPassword: false,
+    updateCustomerPhone: false
 }
 
 export const customerSlice = createSlice({
     name: 'customer',
     initialState,
     reducers: {
-        onUpdateCustomerInformation: ( state ) => {
+        onUpdateCustomerInformation: (state) => {
 
             state.updateCustomer = true;
         },
 
-        onCustomerInformationWasUpdated: ( state ) => {
+        onUpdatePhoneError: (state) => {
 
-            state.updateCustomer = false;
+            state.updateCustomerPhone = true;
         },
 
-        onChangePassword: ( state ) => {
+        onCustomerInformationWasUpdatedOrNot: (state) => {
+
+            state.updateCustomer = false;
+            state.updateCustomerPhone = false;
+        },
+
+        onChangePassword: (state) => {
 
             state.checkingPassword = true;
         },
 
-        onChangingPasswordWasUpdated: ( state ) => {
+        onChangingPasswordWasUpdated: (state) => {
 
             state.changingPassword = true;
         },
 
-        onChangePasswordWasUpdated: ( state ) => {
+        onChangePasswordWasUpdated: (state) => {
 
             state.checkingPassword = false;
         },
 
-        onChangingPasswordWasUpdatedOrFailed: ( state ) => {
+        onChangingPasswordWasUpdatedOrFailed: (state) => {
 
             state.checkingPassword = false;
             state.changingPassword = false;
@@ -52,7 +60,8 @@ export const customerSlice = createSlice({
 });
 
 export const { onUpdateCustomerInformation,
-               onCustomerInformationWasUpdated,
+               onUpdatePhoneError,
+               onCustomerInformationWasUpdatedOrNot,
                onChangingPasswordWasUpdated,
                onChangingPasswordWasUpdatedOrFailed,
                onChangePassword,

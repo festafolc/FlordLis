@@ -1,4 +1,4 @@
-import { Container, Dropdown, DropdownButton, Nav, Navbar, Button } from 'react-bootstrap';
+import { Container, Dropdown, DropdownButton, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Calendar2EventFill, CartDashFill, Flower3, PersonFillCheck, ShopWindow } from 'react-bootstrap-icons';
 import { DropdownLogin } from './DropdownLogin';
@@ -9,10 +9,12 @@ import { logoutThunk } from '../../redux/thunks/authThunks';
 
 export const NavBar = () => {
 
+    const navDropdownTitle = (<ShopWindow />);
+
     const { status } = useFlordLisSelector<AuthState>((state) => state.auth);
 
     const dispatch = useFlordLisDispatch();
-    
+
     const logout = () => {
 
         dispatch(logoutThunk(''));
@@ -36,9 +38,17 @@ export const NavBar = () => {
                         <LinkContainer to="/advices">
                             <Nav.Link><Flower3 /> Consejos</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="/shop">
-                            <Nav.Link><ShopWindow /> Tienda</Nav.Link>
-                        </LinkContainer>
+                        <NavDropdown title={<span><ShopWindow /> Tienda</span>} id="basic-nav-dropdown">
+                            <LinkContainer to="/shop">
+                                <NavDropdown.Item>Todos los productos</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/shop/ecoflordlis">
+                                <NavDropdown.Item>Eco Flor d' Lis</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/shop/flordlishome">
+                                <NavDropdown.Item>Flor d' Lis Home</NavDropdown.Item>
+                            </LinkContainer>
+                        </NavDropdown>
                         <LinkContainer to="/cart">
                             <Nav.Link><CartDashFill /> Carrito</Nav.Link>
                         </LinkContainer>
