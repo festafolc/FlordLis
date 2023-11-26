@@ -15,7 +15,6 @@ export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { prod
                 </Link>
                 {(showbodyCard)
                     ?
-
                     <Card.Body>
                         <Link to={`/product/${product.id}`}>
                             <Card.Title as="div" className="product-title">

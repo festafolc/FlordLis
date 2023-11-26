@@ -35,7 +35,7 @@ export const HomePage = () => {
             <Col key={category.id} sm={12} md={6} lg={4} xl={3}>
               {/* <h3 className='text-center' >{category.name}</h3> */}
               <h3 className='text-center' >{category.name[0].toUpperCase() + category.name.slice(1).replace('-', ' ')}</h3>
-              <CategoriesCard category={category} />
+              <CategoriesCard category={category} bigCard={true}/>
             </Col>
           ))}
         </Row>

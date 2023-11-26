@@ -4,12 +4,14 @@ import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { authSlice } from './slices/authSlice';
 import { Dispatch } from 'react';
 import { customerSlice } from './slices/customerSlice';
+import { filterProductsSlice } from './slices/filterProductsSlice';
 
 export const store: ToolkitStore = configureStore({
     reducer: {
         auth: authSlice.reducer,
         customer: customerSlice.reducer,
-        flordLis: flordLisSlice.reducer
+        flordLis: flordLisSlice.reducer,
+        filterProducts: filterProductsSlice.reducer,
     }
 });
 
