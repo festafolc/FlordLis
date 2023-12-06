@@ -1,4 +1,4 @@
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 export const CategoriesCard = ({ category, bigCard }: { category: any, bigCard: boolean }) => {

@@ -9,7 +9,7 @@ import { logoutThunk } from '../../redux/thunks/authThunks';
 
 export const NavBar = () => {
 
-    const navDropdownTitle = (<ShopWindow />);
+    // const navDropdownTitle = (<ShopWindow />);
 
     const { status } = useFlordLisSelector<AuthState>((state) => state.auth);
 

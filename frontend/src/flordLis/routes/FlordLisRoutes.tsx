@@ -14,6 +14,7 @@ import { useFlordLisSelector } from "../../hooks/useFlordLis"
 import { AuthState } from "../../redux/slices/authSlice"
 import { EcoFlordlisPage } from "../pages/shop/EcoFlordlisPage"
 import { FlordlisHome } from "../pages/shop/FlordlisHome"
+import { Footer } from "../components/Footer"
 
 export const FlordLisRoutes = () => {
 
@@ -47,6 +48,8 @@ export const FlordLisRoutes = () => {
         }
         <Route path="/*" element={<Navigate to="/" />} />
       </Routes >
+
+      <Footer />
     </>
   )
 }
