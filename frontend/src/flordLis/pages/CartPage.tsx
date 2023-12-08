@@ -14,7 +14,10 @@ export const CartPage = () => {
           <Col xs={13} md={8}>
             <Row><h5>{productsInCart.length} productos en la cesta</h5></Row>
             {productsInCart.map((product: any) => (
-                <ProductInCart product={product}/>
+              <Row xs={13} md={8} key={product.id}>
+                <hr style={{marginTop: '10px', marginBottom: '10px'}}/>
+                <ProductInCart product={product} />
+              </Row>
             ))}
           </Col>
           <Col xs={1} md={1}></Col>

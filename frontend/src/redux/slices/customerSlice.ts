@@ -17,9 +17,11 @@ const initialState: CustomerState = {
 }
 
 export const customerSlice = createSlice({
+
     name: 'customer',
     initialState,
     reducers: {
+        
         onUpdateCustomerInformation: (state) => {
 
             state.updateCustomer = true;

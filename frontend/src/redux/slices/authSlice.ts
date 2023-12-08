@@ -8,34 +8,43 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
+    
     status: 'checking',
     userId: undefined,
     errorMessage: ''
 }
 
 export const authSlice = createSlice({
+
     name: 'auth',
     initialState,
     reducers: {
+
         onChecking: (state) => {
+
             state.status = 'checking';
             state.userId = undefined;
             state.errorMessage = '';
         },
+
         onLogin: (state, action: PayloadAction<AuthState["userId"]>) => {
+
             state.status = 'authenticated';
             state.userId = action.payload;
             state.errorMessage = '';
         },
+
         onLogout: (state, action: PayloadAction<AuthState["errorMessage"]>) => {
+
             state.status = 'not-authenticated';
             state.userId = undefined,
             state.errorMessage = action.payload;
         },
+
         onClearErrorMessage: (state) => {
+
             state.errorMessage = '';
         }
-
     }
 });
 

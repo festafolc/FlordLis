@@ -5,6 +5,7 @@ import { authSlice } from './slices/authSlice';
 import { Dispatch } from 'react';
 import { customerSlice } from './slices/customerSlice';
 import { filterProductsSlice } from './slices/filterProductsSlice';
+import { cartSlice } from './slices/cartSlice';
 
 export const store: ToolkitStore = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store: ToolkitStore = configureStore({
         customer: customerSlice.reducer,
         flordLis: flordLisSlice.reducer,
         filterProducts: filterProductsSlice.reducer,
+        cart: cartSlice.reducer
     }
 });
 

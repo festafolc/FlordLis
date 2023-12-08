@@ -11,9 +11,11 @@ const initialState: FlordLisState = {
 }
 
 export const flordLisSlice: Slice = createSlice({
+
     name: 'flordLis',
     initialState,
     reducers: {
+        
         actionLogin: ( state ) => {
 
             state.isLogged = true;

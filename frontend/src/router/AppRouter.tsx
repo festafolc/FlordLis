@@ -4,6 +4,7 @@ import { FlordLisRoutes } from "../flordLis/routes/FlordLisRoutes"
 import { useFlordLisDispatch, useFlordLisSelector } from "../hooks/useFlordLis";
 import { checkAuthTokenThunk } from "../redux/thunks/authThunks";
 import { useEffect } from "react";
+import { refreshAllProductsInCartThunk } from "../redux/thunks/cartThunk";
 
 const AppRouter = () => {
 
@@ -14,6 +15,7 @@ const AppRouter = () => {
   useEffect(() => {
     
     dispatch(checkAuthTokenThunk());
+    dispatch(refreshAllProductsInCartThunk());
   }, []);
 
   if (status === 'checking') {
