@@ -39,7 +39,7 @@ export const ShopPage = () => {
 
     if (dcComics && marvelComics) {
 
-      productsFiltered = comicsList.filter(o => parseInt(o.price) <= priceFilter);
+      productsFiltered = comicsList.filter(o => parseInt(o.price) <= priceFilter);      
     }
     else if (dcComics) {
 
@@ -49,11 +49,13 @@ export const ShopPage = () => {
       productsFiltered = comicsList.filter(o => parseInt(o.price) <= priceFilter && o.category === 'Marvel Comics');
     }
     
-    if (Object.keys(productsFiltered[0]).length > 0) {
+    if (productsFiltered.length > 0) {
       
       dispatch(getAllProductsThunk(productsFiltered));
     }
     else {
+      console.log('adios');
+      
       dispatch(clearProductsThunk());
     }
   }

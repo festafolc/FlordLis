@@ -5,7 +5,7 @@ import { EnvelopeAtFill, Instagram, SignpostSplitFill, TelephoneFill, Tiktok } f
 
 export const Footer = () => {
     return (
-        <footer style={{ background: 'green' }}>
+        <footer style={{ background: 'green', marginTop: '40px'}}>
             <Container>
                 <Row>
                     <Col>
