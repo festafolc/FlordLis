@@ -26,14 +26,7 @@ export const cartSlice = createSlice({
 
             if (!existProduct) {
 
-                if (state.productsToBuy?.length === 0) {
-
-                    state.productsToBuy = [product];
-                }
-                else {
-                    
-                    state.productsToBuy = [...state.productsToBuy, product];
-                }
+                state.productsToBuy = [...state.productsToBuy, product];
 
                 localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
 
@@ -60,9 +53,9 @@ export const cartSlice = createSlice({
         onRefreshAllProductsInCart: (state) => {
 
             const productsInCart = localStorage.getItem('cart');
-            
+
             if (productsInCart != null) {
-                
+
                 state.productsToBuy = JSON.parse(productsInCart);
                 state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
             }
