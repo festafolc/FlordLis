@@ -1,10 +1,19 @@
 import { Button, Col, Image, Row } from "react-bootstrap"
 import { Rating } from "./Rating";
+import { useFlordLisDispatch } from "../../hooks/useFlordLis";
+import { removeProductFromCartThunk } from "../../redux/thunks/cartThunk";
 
 
 export const ProductInCart = ({ product }: { product: any }) => {
 
+    const dispatch = useFlordLisDispatch();
+
     const productImageUrl = `../../../assets/products/${product.id}.jpg`;
+
+    const removeProductFromCart = () => {
+
+        dispatch(removeProductFromCartThunk(product));
+    }
 
     return (
         <>
@@ -18,7 +27,7 @@ export const ProductInCart = ({ product }: { product: any }) => {
             </Col>
             <Col>
                 <Row>
-                    <Button><span>Eliminar</span></Button>
+                    <Button onClick={removeProductFromCart}><span>Eliminar</span></Button>
                 </Row>
             </Col>
             <Col>

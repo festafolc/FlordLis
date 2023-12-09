@@ -1,4 +1,4 @@
-import { Container, Dropdown, DropdownButton, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
+import { Container, Dropdown, DropdownButton, Nav, Navbar, Button, NavDropdown, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Calendar2EventFill, CartDashFill, Flower3, PersonFillCheck, ShopWindow } from 'react-bootstrap-icons';
 import { DropdownLogin } from './DropdownLogin';
@@ -6,12 +6,15 @@ import logo from '../../assets/images/logo.png';
 import { useFlordLisDispatch, useFlordLisSelector } from '../../hooks/useFlordLis';
 import { AuthState } from '../../redux/slices/authSlice';
 import { logoutThunk } from '../../redux/thunks/authThunks';
+import { Cart } from '../../redux/slices/cartSlice';
 
 export const NavBar = () => {
 
     // const navDropdownTitle = (<ShopWindow />);
 
     const { status } = useFlordLisSelector<AuthState>((state) => state.auth);
+    const { productsToBuy } = useFlordLisSelector<Cart>((state) => state.cart);
+
 
     const dispatch = useFlordLisDispatch();
 
@@ -50,7 +53,18 @@ export const NavBar = () => {
                             </LinkContainer>
                         </NavDropdown>
                         <LinkContainer to="/cart">
-                            <Nav.Link><CartDashFill /> Carrito</Nav.Link>
+                            <Nav.Link>
+                                <CartDashFill /> Carrito
+                                {
+                                    (productsToBuy?.length > 0)
+                                        ?
+                                        <Badge pill bg='success' style={{ marginLeft: '5px' }}>
+                                            {productsToBuy.length}
+                                        </Badge>
+                                        :
+                                        null
+                                }
+                            </Nav.Link>
                         </LinkContainer>
                         {(status === 'authenticated')
                             ?

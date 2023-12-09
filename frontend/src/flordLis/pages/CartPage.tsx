@@ -1,36 +1,47 @@
 import { Button, Col, Container, Row } from "react-bootstrap"
-import { getProductByCategory } from "../helpers/getProductByCategory";
 import { ProductInCart } from "../components/ProductInCart";
+import { Cart } from "../../redux/slices/cartSlice";
+import { useFlordLisSelector } from "../../hooks/useFlordLis";
 
 export const CartPage = () => {
 
-  const productsInCart = getProductByCategory('DC Comics');
+  const { productsToBuy, totalPrice } = useFlordLisSelector<Cart>((state) => state.cart);
 
   return (
     <>
-      <Container>
-        <Row>
-          <Row><h1>Cesta</h1></Row>
-          <Col xs={13} md={8}>
-            <Row><h5>{productsInCart.length} productos en la cesta</h5></Row>
-            {productsInCart.map((product: any) => (
-              <Row xs={13} md={8} key={product.id}>
-                <hr style={{marginTop: '10px', marginBottom: '10px'}}/>
-                <ProductInCart product={product} />
-              </Row>
-            ))}
-          </Col>
-          <Col xs={1} md={1}></Col>
-          <Col xs={4} md={3}>
-            <Row><h5>Total:</h5></Row>
-            <Row><h2>500.000 $COP</h2></Row>
+      {
+        (productsToBuy?.length === 0)
+          ?
+          <Container>
             <Row>
-              <Button>Pagar</Button>
+              <h1>Sin productos. Vete a comprar cojones</h1>
             </Row>
-            <hr />
-          </Col>
-        </Row>
-      </Container>
+          </Container>
+          :
+          <Container>
+            <Row>
+              <Row><h1>Cesta</h1></Row>
+              <Col xs={13} md={8}>
+                <Row><h5>{productsToBuy.length} productos en la cesta</h5></Row>
+                {productsToBuy.map((product: any) => (
+                  <Row xs={13} md={8} key={product.id}>
+                    <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
+                    <ProductInCart product={product} />
+                  </Row>
+                ))}
+              </Col>
+              <Col xs={1} md={1}></Col>
+              <Col xs={4} md={3}>
+                <Row><h5>Total:</h5></Row>
+                <Row><h2>{totalPrice} $COP</h2></Row>
+                <Row>
+                  <Button>Comprar</Button>
+                </Row>
+                <hr />
+              </Col>
+            </Row>
+          </Container>
+      }
     </>
   )
 }

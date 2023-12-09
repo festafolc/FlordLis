@@ -9,11 +9,11 @@ export const addProductsToCartThunk = (product: {}) => {
     }
 }
 
-export const removeProductFromCartThunk = () => {
+export const removeProductFromCartThunk = (product: {}) => {
 
     return (dispatch: FlordLisDispatch) => {
 
-        dispatch(onRemoveProductFromCart());
+        dispatch(onRemoveProductFromCart(product));
     }
 }
 

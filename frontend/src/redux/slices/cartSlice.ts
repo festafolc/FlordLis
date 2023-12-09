@@ -2,12 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface Cart {
 
-    productsToBuy: {}[];
+    productsToBuy: any[];
+    totalPrice: number
 }
 
 const initialState: Cart = {
 
-    productsToBuy: [{}]
+    productsToBuy: [],
+    totalPrice: 0
 }
 
 export const cartSlice = createSlice({
@@ -24,7 +26,7 @@ export const cartSlice = createSlice({
 
             if (!existProduct) {
 
-                if (JSON.stringify(state.productsToBuy[0]) === '{}') {
+                if (state.productsToBuy?.length === 0) {
 
                     state.productsToBuy = [product];
                 }
@@ -33,22 +35,26 @@ export const cartSlice = createSlice({
                     state.productsToBuy = [...state.productsToBuy, product];
                 }
 
-
                 localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
-            }
 
+                state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
+            }
         },
 
-        onRemoveProductFromCart: (state) => {
+        onRemoveProductFromCart: (state, action) => {
 
-            state.productsToBuy = [{}];
+            state.productsToBuy = state.productsToBuy.filter(product => action.payload.id !== product.id);
             localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
+
+            state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
         },
 
         onRemoveAllProductFromCart: (state) => {
 
-            state.productsToBuy = [{}];
+            state.productsToBuy = [];
             localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
+
+            state.totalPrice = 0;
         },
 
         onRefreshAllProductsInCart: (state) => {
@@ -58,6 +64,7 @@ export const cartSlice = createSlice({
             if (productsInCart != null) {
                 
                 state.productsToBuy = JSON.parse(productsInCart);
+                state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
             }
         }
     }

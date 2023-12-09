@@ -27,6 +27,7 @@ export const ShopPage = () => {
   const [marvelComics, setMarvelComics] = useState<boolean>(true);
 
   const onPriceFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
+    
     event.preventDefault();
     setPriceFilter(parseInt(event.target.value));
   }
