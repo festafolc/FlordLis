@@ -1,0 +1,46 @@
+.APP-cards__content {
+    position: relative;
+    /* margin-left: 18rem;
+    margin-right: 18rem;
+    margin-bottom: 10rem; */
+    display: flex;
+    flex-direction: row;
+    gap: 4rem;
+    text-align: center;
+}
+
+.APP-cards__shop {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 4rem;
+}
+
+.APP-shop__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 0 0 2px black;
+    z-index: 1;
+}
+
+.APP-shop__img {
+    width: 100%;
+    height: 100%;
+    transition: all 900ms ease-in-out;
+}
+
+.APP-product__image-img {
+    width: 100%;
+}
+
+.APP-cards__shop:hover>.APP-shop__img {
+    transform: scale(1.1);
+}
+
+.APP-cards__shop:hover>.APP-shop__title {
+    color: black;
+}

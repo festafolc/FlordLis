@@ -1,5 +1,4 @@
-import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
-import { ProductCard } from './ProductCard';
+import { ProductCard } from './ProductCard/ProductCard';
 import { getProductByCategory } from '../helpers/getProductByCategory';
 
 export const MyOrders = () => {
@@ -10,7 +9,8 @@ export const MyOrders = () => {
 
     return (
         <>
-            <Container className='mx-5' >
+        <div>MyOrders</div>
+            {/* <Container className='mx-5' >
                 <Container className='mx-5' style={{ width: '55rem' }}>
                     <Stack gap={5}>
                         {
@@ -32,7 +32,7 @@ export const MyOrders = () => {
                         }
                     </Stack>
                 </Container>
-            </Container>
+            </Container> */}
         </>
     )
 }

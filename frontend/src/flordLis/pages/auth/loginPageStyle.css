@@ -1,0 +1,138 @@
+.layout__login {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: aliceblue;
+}
+
+.login__container {
+    position: relative;
+    margin: 0 auto;
+    width: 22%;
+    padding: 10px;
+    margin-top: 25rem;
+    background-color: transparent;
+    border-radius: 3rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+}
+
+.login__title {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    color: green;
+    text-shadow: 0 0 1px white;
+    font-size: 3.5rem;
+    font-weight: 500;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* .login__img {
+    width: 20rem;
+    clip-path: circle();
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+} */
+
+.login__inputs {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: center;
+}
+
+.login__input {
+    /* background-color: aliceblue; */
+    margin-bottom: 3rem;
+    padding: 0 1.5rem;
+    height: 5rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid greenyellow;
+}
+
+.login__button {
+    width: 80%;
+    border-radius: 5rem;
+    margin-bottom: 3rem;
+    padding: 0 3rem;
+    height: 5rem;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border: none;
+    transition: all 300ms ease-out;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.login__button:hover {
+    color: green;
+    background-color: greenyellow;
+}
+
+.login__footer {
+    width: 65%;
+    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.footer__register {
+    color: gray;
+    text-decoration: none;
+}
+
+.footer__register:hover {
+    color: green;
+}
+
+.footer_forgot-password {
+    color: gray;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.footer_forgot-password:hover {
+    color: green;
+}
+
+.homePage__text {
+    color: rgb(90, 86, 86);
+    text-decoration: none;
+}
+
+.footer__homePage:hover {
+    color: green;
+}
+
+.login_error {
+    color: red;
+    margin-top: -1rem;
+    font-size: 1.5rem;
+}
+
+.sunflower_img {
+    z-index: 0;
+    position: relative;
+    top: -70%;
+    left: 35%;
+    width: 30%;
+}

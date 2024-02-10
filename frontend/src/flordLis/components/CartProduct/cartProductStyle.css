@@ -1,0 +1,68 @@
+.CP__container {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 3rem;
+}
+
+.CP__product {
+    display: flex;
+    flex-direction: row;
+    height: 20rem;
+}
+
+.CP__image-container {
+    width: 24%;
+}
+
+.CP__image-container-2 {
+    width: 100%;
+    height: 100%;
+}
+
+.CP__image {
+    width: 100%;
+    height: 100%;
+}
+
+.CP__information {
+    width: 100%;
+    padding-left: 10rem;
+    padding-right: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.CP__information-details {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.CP__quantity {
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.CP__quantity-text {
+    margin-right: 3rem;
+}
+
+.CP__deleteProduct {
+    width: 10rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+}
+
+.CP__price {
+    margin: auto;
+}
+
+.CP__separator {
+    margin-top: 3rem;
+}

@@ -42,7 +42,7 @@ export const cartSlice = createSlice({
             state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
         },
 
-        onRemoveAllProductFromCart: (state) => {
+        onRemoveAllProductsFromCart: (state) => {
 
             state.productsToBuy = [];
             localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
@@ -63,4 +63,4 @@ export const cartSlice = createSlice({
     }
 });
 
-export const { onAddProductToCart, onRemoveProductFromCart, onRemoveAllProductFromCart, onRefreshAllProductsInCart } = cartSlice.actions;
+export const { onAddProductToCart, onRemoveProductFromCart, onRemoveAllProductsFromCart, onRefreshAllProductsInCart } = cartSlice.actions;

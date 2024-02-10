@@ -7,7 +7,7 @@ import { Customer } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
-    const { email, password, activeNotifications } = req.body;
+    const { name, surname, phone, email, password, activeNotifications } = req.body;
 
     try {
 
@@ -23,8 +23,8 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                 const salt = bcrypt.genSaltSync(15);
                 const encrypted = bcrypt.hashSync(password, salt);
 
-                const newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (email, password, activeNotifications, isDeleted)
-                                                                              VALUES ("${email}", "${encrypted}", ${activeNotifications}, ${false});`);
+                const newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
+                                                                              VALUES ("${name}", "${surname}", "${phone}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
 
                 if (newCustomer != null) {
 

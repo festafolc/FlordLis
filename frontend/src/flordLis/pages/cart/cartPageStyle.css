@@ -1,0 +1,38 @@
+.CARTPAGE__container {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.CARTPAGE__products__separator {
+    margin-bottom: 3rem;
+}
+
+.CARTPAGE__leftContainer {
+    width: 100%;
+}
+
+.CARTPAGE__rightContainer {
+    width: 20%;
+    margin-top: 3rem;
+    margin-left: 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem
+}
+
+.CARTPAGE__payButton {
+    border-radius: 2rem;
+    padding: 1rem 3rem;
+    background-color: rgb(65, 160, 53);
+    cursor: pointer;
+    transition: all 400ms ease-in-out;
+    border: none;
+    border-radius: 1.5rem;
+}
+
+.CARTPAGE__payButton:hover{
+    background-color: rgb(23, 85, 23);
+}

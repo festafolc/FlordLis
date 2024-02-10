@@ -1,0 +1,53 @@
+.container__orders {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.orders__title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.orders__info {
+    width: 100%;
+}
+
+.order__information {
+    position: relative;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 5rem;
+    align-items: center;
+    border-bottom: 1px solid rgb(65, 160, 53);;
+    transition: all 200ms ease-in-out;
+}
+
+.column__title {
+    font-weight: 500;
+    text-align: center;
+}
+
+.column__info {
+    font-weight: 400;
+    text-align: center;
+}
+
+.column__invoice {
+    border-radius: 2rem;
+    padding: 1rem 3rem;
+    background-color: rgb(65, 160, 53);
+    transition: all 400ms ease-in-out;
+    border: none;
+    border-radius: 1.5rem;
+}
+
+.column__invoice:hover{
+    background-color: rgb(23, 85, 23);
+}

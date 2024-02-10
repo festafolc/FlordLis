@@ -1,6 +1,5 @@
-import { Carousel, Image } from 'react-bootstrap';
 import { getProductByCategory } from '../helpers/getProductByCategory';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 export const ProductsCarousel = () => {
 
@@ -9,7 +8,8 @@ export const ProductsCarousel = () => {
 
     return (
         <>
-            <Carousel className="w-75">
+        <div>ProductsCarousel</div>
+            {/* <Carousel className="w-75">
                 {
                     bestProducts.map((product: any) => (
                         <Carousel.Item key={product.id} style={{ height: '500px' }}>
@@ -23,7 +23,7 @@ export const ProductsCarousel = () => {
                         </Carousel.Item>
                     ))
                 }
-            </Carousel>
+            </Carousel> */}
         </>
     )
 }

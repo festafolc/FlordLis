@@ -16,8 +16,11 @@ const authRouter = Router();
 authRouter.post(
     '/login',
     [
+        check('name', "Please, provide your name").isEmpty().not(),
+        check('surname', "Please, your surname").isEmpty().not(),
+        check('phone', "Please, provide your phone").isEmpty().not(),
         check('email', "Please, provide a valid email").isEmail(),
-        check('password', "Password is incorrect").isLength({ min: 8 }),
+        check('password', "Please, provide a password with minimum 8 characteres").isLength({ min: 8 }),
         formValidator
     ], loginCustomer);
 

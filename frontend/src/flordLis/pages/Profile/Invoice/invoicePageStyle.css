@@ -1,0 +1,134 @@
+.container__invoice {
+    position: relative;
+    width: 60%;
+    padding: 3rem;
+    margin: 0 auto;
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-image: linear-gradient(rgb(245, 245, 245), rgb(240, 240, 240));
+    border-radius: 5px;
+}
+
+.invoice__top, .invoice__customer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+}
+
+.customer__info-column {
+    width: 33%;
+}
+
+.flordlis__name, .info__title {
+    font-weight: 600;
+    font-size: large;
+}
+
+.flordlis__address, .info__text {
+    font-weight: 500;
+    font-size: medium;
+}
+
+.top__logo {
+    background-color: green;
+}
+
+.invoice__table {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.15);
+}
+
+
+.table__head {
+    background-color: rgb(62, 158, 62);
+    color: white;
+}
+
+.column__title {
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-size: large;
+    font-weight: bold;
+}
+
+.column__title-Products {
+    width: 50%;
+}
+
+.body__row {
+    border-bottom: 1px solid grey;
+}
+
+.row__value {
+    padding: 1.2rem 1.5rem;
+}
+
+.body__row:last-of-type {
+    border-bottom: 2px solid rgb(62, 158, 62);
+}
+
+.footer__invoice {
+    margin-top: 6rem;
+    padding-bottom: 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-right: 7rem;
+    gap: 15rem;
+    border-bottom: 1px solid grey;
+}
+
+
+.footer__right {
+    display: flex;
+    flex-direction: column;
+}
+
+.right__info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+.footer__totalPrice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 7rem;
+    margin-left: 7rem;
+    gap: 4rem;
+    padding-top: 3rem;
+}
+
+.totalPrice__column {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4rem;
+}
+
+.footer__title {
+    font-weight: 500;
+    font-size: large;
+}
+
+.totalPrice__title {
+    font-weight: 600;
+    font-size: larger;
+}
+
+.totalPrice__text {
+    font-weight: 500;
+    font-size: large;
+}

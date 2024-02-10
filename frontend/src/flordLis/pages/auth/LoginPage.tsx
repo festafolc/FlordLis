@@ -1,11 +1,15 @@
-import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import flordLisApi from "../../../apis/flordLisApi";
 import { useForm } from "../../../hooks/useForm";
 import { useFlordLisDispatch, useFlordLisSelector } from "../../../hooks/useFlordLis";
 import { loginThunk, logoutThunk } from "../../../redux/thunks/authThunks";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Customer } from '../../../../../backend/types';
+import flordLisLogo from '../../../assets/images/ecoflordlis.jpg';
+import sunflower from '../../../assets/images/sunflower.png';
+import waterColourFlower from '../../../assets/images/sunflower.png';
+import './loginPageStyle.css';
+
 
 const loginFormFields: {} = {
 
@@ -17,7 +21,7 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showLoginError, setShowLoginError] = useState<boolean>(false);
 
   const { errorMessage } = useFlordLisSelector((state) => state.auth);
 
@@ -31,9 +35,11 @@ export const LoginPage = () => {
 
     try {
 
-      const { data }: {data: Customer} = await flordLisApi.post('/login', { email, password });
+      const { data }: { data: Customer } = await flordLisApi.post('/login', { email, password });
 
       if (data.ok) {
+
+        setShowLoginError(false);
 
         dispatch(loginThunk(data.id));
 
@@ -57,18 +63,37 @@ export const LoginPage = () => {
 
     if (errorMessage?.length > 0) {
 
-      setShowModal(true);
+      setShowLoginError(true);
     }
   }, [errorMessage]);
 
-  const onCloseErrorMessage = () => {
-
-    setShowModal(false);
-  }
-
   return (
     <>
-    {showModal && 
+      <section className="layout__login">
+        <div className="login__container">
+          <h1 className="login__title">Flor d' Lis</h1>
+          <form className="login__form" onSubmit={loginSubmit}>
+            <div className="login__inputs">
+              <input className="login__input login__email" type="email" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange}></input>
+              <input className="login__input login__password" type="password" placeholder="Contraseña" name="password" value={password || ''} onChange={onInputChange}></input>
+              <button className="login__button" type="submit">Iniciar sesión</button>
+            </div>
+          </form>
+          {
+            showLoginError &&
+            <span className="login_error">Las credenciales no son válidas.</span>
+          }
+          <div className="login__footer">
+            <Link className="footer__register" to="/auth/register">Registrarse</Link>
+            <button className="footer_forgot-password">Recuperar <br /> contraseña</button>
+          </div>
+          <div className="footer__homePage">
+            <Link className="homePage__text" to="/">Página principal</Link>
+          </div>
+        </div>
+        <img className="sunflower_img" src={sunflower} alt="Imagen girasol" />
+      </section>
+      {/* {showModal && 
       <div className="modal position-absolute justify-content-center align-items-center" style={{display: 'block'}}>
         <Modal.Dialog>
           <Modal.Body>
@@ -77,9 +102,10 @@ export const LoginPage = () => {
           </Modal.Body>
         </Modal.Dialog>
       </div>
+      <div>LoginPage</div>
       }
 
-      <Container className="position-relative">
+       <Container className="position-relative">
         <Row className="h1 justify-content-center align-items-center mt-5">
           Flor d' Lis
         </Row>
@@ -95,14 +121,12 @@ export const LoginPage = () => {
                   <Card.Body className="p-4 p-lg-5 text-black">
                     <Form onSubmit={loginSubmit}>
 
-                      {/* Email */}
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Correo electrónico</Form.Label>
                         <Form.Control type="email" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange} />
-                      </Form.Group>
+                      </Form.Group> */
 
-                      {/* Password */}
-                      <Form.Group className="mb-3" controlId="formBasicPassword">
+                      /* <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Contraseña</Form.Label>
                         <Form.Control type="password" placeholder="Contraseña" name="password" value={password || ''} onChange={onInputChange} />
                       </Form.Group>
@@ -118,7 +142,7 @@ export const LoginPage = () => {
             </Card>
           </Col>
         </Row>
-      </Container >
+      </Container >   */}
     </>
   )
 }

@@ -1,0 +1,99 @@
+.container__carouselAndButtons {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container__carousel {
+    width: 90%;
+    position: relative;
+    display: grid;
+    place-items: center;
+    font-weight: 400;
+  }
+
+.carousel__box {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40rem;
+    gap: 10px;
+}
+
+.carousel__card {
+    position: relative;
+    flex: 0 0 16rem;
+    border-radius: 0.5rem;
+    box-shadow: 1px 5px 15px #277924;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.card_img {
+    height: 100%;
+    width: 100%;
+}
+
+.card__content {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transform: translatey(100%);
+    transition: opacity 0.5s ease-in-out, transform 0.5s 0.2s;
+    visibility: hidden;
+}
+
+.carousel__card:hover {
+    flex: 0 0 250px;
+    box-shadow: 1px 3px 15px #7645d8;
+    transform: translatey(-3rem);
+}
+
+.card__text {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: gold;
+}
+
+.carousel__card:hover > .card__content {
+    opacity: 1;
+    transform: translatey(-200%);
+    visibility: visible;
+}
+
+.container__buttons {
+
+    display: flex;
+    height: 10rem;
+    width: 5%;
+    background-color: rgb(53, 53, 68);
+    opacity: 0.7;
+    align-items: center;
+    border-radius: 0.5rem;
+    transition: all 0.250s ease-in-out;
+}
+
+.container__buttons-right {
+
+    justify-content: end;
+}
+
+.buttons__indexPostion {
+    
+    height: 100%;
+    width: 100%;
+    border: 1px solid transparent;
+    background-color: transparent;
+    opacity: 0.7;
+    
+}
+
+.container__buttons:hover {
+    opacity: 1;
+}

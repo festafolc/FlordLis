@@ -1,0 +1,13 @@
+.APP-card__product {
+    position: relative;
+    text-align: center;
+    width: 30%;
+    height: 40rem;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 2rem;
+}
+
+.APP-product__info {
+    margin-top: 2rem;
+}

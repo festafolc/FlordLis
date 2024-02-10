@@ -1,20 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { HomePage } from "../pages/HomePage"
+import { HomePage } from "../pages/home/HomePage"
 import { EventsPage } from "../pages/EventsPage"
 import { AdvicesPage } from "../pages/AdvicesPage"
-import { ShopPage } from "../pages/shop/ShopPage"
-import { ProductPage } from "../pages/shop/ProductPage"
-import { CartPage } from "../pages/CartPage"
-import { NavBar } from "../components/Navbar"
+import { AllProductsPage } from "../pages/shop/AllProducts/AllProductsPage"
+import { ProductPage } from "../pages/shop/Product/ProductPage"
+import { CartPage } from "../pages/cart/CartPage"
+import { NavBar } from "../components/Navbar/Navbar"
 import { CategoryPage } from "../pages/CategoryPage"
 import { ProfileInformationPage } from "../pages/Profile/ProfileInformationPage"
-import { ProfileOrdersPage } from "../pages/Profile/ProfileOrdersPage"
-import { ProfileWishListPage } from "../pages/Profile/ProfileWishListPage"
 import { useFlordLisSelector } from "../../hooks/useFlordLis"
 import { AuthState } from "../../redux/slices/authSlice"
-import { EcoFlordlisPage } from "../pages/shop/EcoFlordlisPage"
-import { FlordlisHome } from "../pages/shop/FlordlisHome"
-import { Footer } from "../components/Footer"
+import { EcoFlordLisPage } from "../pages/shop/EcoflordLis/EcoFlordLisPage"
+import { FlordlisHomePage } from "../pages/shop/FlordLisHome/FlordlisHomePage"
+import { InvoicePage } from "../pages/Profile/Invoice/InvoicePage"
+import { PersonalProduct } from "../pages/PersonalProduct/PersonalProduct"
 
 export const FlordLisRoutes = () => {
 
@@ -23,33 +22,31 @@ export const FlordLisRoutes = () => {
   return (
     <>
       <NavBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/events" element={<EventsPage />} />
+          <Route path="/advices" element={<AdvicesPage />} /> */}
+          <Route path="/shop" element={<AllProductsPage />} />
+          <Route path="/shop/ecoflordlis" element={<EcoFlordLisPage />} />
+          <Route path="/shop/flordlishome" element={<FlordlisHomePage />} />
+          <Route path="/shop/categories/:name" element={<CategoryPage />} />
+          <Route path="/shop/:id" element={<ProductPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/request-personal-design" element={<PersonalProduct />} />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/events" element={<EventsPage />} />
-        <Route path="/advices" element={<AdvicesPage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/shop/ecoflordlis" element={<EcoFlordlisPage />} />
-        <Route path="/shop/flordlishome" element={<FlordlisHome />} />
-        <Route path="/shop/categories/:name" element={<CategoryPage />} />
-        <Route path="/shop/categories/product/:id" element={<ProductPage />} />
-        <Route path="/cart" element={<CartPage />} />
-
-        {
-          (status === "authenticated")
-            ?
-            <Route>
-              <Route path="/profile/information" element={<ProfileInformationPage />} />
-              <Route path="/profile/orders" element={<ProfileOrdersPage />} />
-              <Route path="/profile/wishlist" element={<ProfileWishListPage />} />
-            </Route>
-            :
-            null
-        }
-        <Route path="/*" element={<Navigate to="/" />} />
-      </Routes >
-
-      <Footer />
+          {
+            (status === "authenticated")
+              ?
+              <Route>
+                <Route path="/profile/information" element={<ProfileInformationPage />} />
+                <Route path="/profile/orders/invoice/:id" element={<InvoicePage />} />
+              </Route>
+              :
+              null
+          }
+          
+          <Route path="/*" element={<Navigate to="/" />} />
+        </Routes >
     </>
   )
 }

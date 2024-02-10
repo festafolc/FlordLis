@@ -1,11 +1,9 @@
-import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap';
-import { ListOl, PersonLinesFill, SearchHeartFill } from 'react-bootstrap-icons';
-import { LinkContainer } from 'react-router-bootstrap';
+
 
 export const SidebarProfile = () => {
     return (
         <>
-            <Navbar className="col-md-12 d-md-block bg-light">
+            {/* <Navbar className="col-md-12 d-md-block bg-light">
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav>
@@ -37,7 +35,7 @@ export const SidebarProfile = () => {
 
                     </Nav>
                 </Navbar.Collapse>
-            </Navbar>
+            </Navbar> */}
 
 
             {/* <Nav className="col-md-12 d-none d-md-block bg-light sidebar">

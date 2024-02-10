@@ -1,5 +1,6 @@
 import flordLisApi from "../../apis/flordLisApi";
 import { onChecking, onClearErrorMessage, onLogin, onLogout } from "../slices/authSlice";
+import { onRemoveAllProductsFromCart } from "../slices/cartSlice";
 import { FlordLisDispatch } from '../store';
 
 export const loginThunk = (userId: number) => {
@@ -20,6 +21,7 @@ export const logoutThunk = (errorMessage: string) => {
         setTimeout(() => {
             dispatch(onClearErrorMessage());
         }, 10);
+        dispatch(onRemoveAllProductsFromCart());
     }
 }
 

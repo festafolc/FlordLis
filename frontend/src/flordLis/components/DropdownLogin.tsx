@@ -1,4 +1,3 @@
-import { Button, Container, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 export const DropdownLogin = () => {
@@ -12,15 +11,13 @@ export const DropdownLogin = () => {
 
     return (
         <>
-            <Container style={{ width: "300px" }}>
+            {/* <Container style={{ width: "300px" }}>
                 <Form>
-                    {/* Email */}
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Correo electrónico</Form.Label>
                         <Form.Control type="email" placeholder="Correo electrónico" />
                     </Form.Group>
 
-                    {/* Password */}
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Contraseña</Form.Label>
                         <Form.Control type="password" placeholder="Contraseña" />
@@ -30,7 +27,7 @@ export const DropdownLogin = () => {
                         Inicia sesión
                     </Button>
                 </Form>
-            </Container>
+            </Container> */}
         </>
     )
 }

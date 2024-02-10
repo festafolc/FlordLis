@@ -1,4 +1,4 @@
-import { onAddProductToCart, onRefreshAllProductsInCart, onRemoveAllProductFromCart, onRemoveProductFromCart } from '../slices/cartSlice';
+import { onAddProductToCart, onRefreshAllProductsInCart, onRemoveAllProductsFromCart, onRemoveProductFromCart } from '../slices/cartSlice';
 import { FlordLisDispatch } from '../store';
 
 export const addProductsToCartThunk = (product: {}) => {
@@ -21,7 +21,7 @@ export const removeAllProductsFromCartThunk = () => {
 
     return (dispatch: FlordLisDispatch) => {
 
-        dispatch(onRemoveAllProductFromCart());
+        dispatch(onRemoveAllProductsFromCart());
     }
 }
 
