@@ -7,6 +7,7 @@ import { Cart } from '../../../redux/slices/cartSlice';
 import './navbarStyle.css';
 
 import logo from '../../../assets/images/logo.png';
+import { adminLogoutThunk } from '../../../redux/thunks/flordLisThunks';
 
 export const NavBar = () => {
 
@@ -18,7 +19,8 @@ export const NavBar = () => {
     const dispatch = useFlordLisDispatch();
 
     const logout = () => {
-
+        
+        dispatch(adminLogoutThunk());
         dispatch(logoutThunk(''));
     }
 

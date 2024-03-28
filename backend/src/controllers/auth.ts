@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 import bcrypt from 'bcryptjs';
 import dbConnection from '../database/config';
 import { createJWT } from '../helpers/jwt';
-import { Customer } from '../../types';
+import { Admin, Customer } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
@@ -12,19 +12,36 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
     try {
 
         const connection = await dbConnection();
-        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+
+        let result;
+        if (email === 'carlos@carlos.com') {
+
+            result = await connection?.query<Customer[]>(`SELECT * FROM Admin_Users WHERE email = "${email}";`);
+        }
+        else {
+
+            result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        }
 
         if (result != null) {
 
             const customer: Customer = result[0][0];
-
             if (customer == null) {
 
                 const salt = bcrypt.genSaltSync(15);
                 const encrypted = bcrypt.hashSync(password, salt);
 
-                const newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
-                                                                              VALUES ("${name}", "${surname}", "${phone}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
+                let newCustomer;
+                if (email === 'carlos@carlos.com') {
+
+                    newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Admin_Users (admin_type, phone, email, password, isDeleted)
+                                                                            VALUES (${2}, "${phone}", "${email}", "${encrypted}", ${false});`);
+                }
+                else {
+
+                    newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
+                                                                                  VALUES ("${name}", "${surname}", "${phone}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
+                }
 
                 if (newCustomer != null) {
 
@@ -46,7 +63,6 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                         msg: 'An expected error occurred.'
                     });
                 }
-
             }
             else {
 
@@ -65,10 +81,12 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
         }
     }
     catch (error) {
-
+        console.log(error);
+        
         return res.status(500).json({
             ok: false,
-            msg: 'An expected error occurred.'
+            msg: 'An expected error occurred.',
+            error
         });
     }
 }
@@ -81,11 +99,20 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
         // `SELECT sub.id, sub.email, sub.password, sub.isDeleted, date_format(sub.createdAt, '%b %d %Y')
         // FROM (SELECT id, email, password, isDeleted, createdAt FROM Customers WHERE email = "${email}") as sub;`
         const connection = await dbConnection();
-        const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        let result;
+
+        if (email === 'carlos@carlos.com') {
+
+            result = await connection?.query<Admin[]>(`SELECT * FROM Admin_Users WHERE email = "${email}";`);
+        }
+        else {
+
+            result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+        }
 
         if (result != null) {
 
-            const customer: Customer = result[0][0];
+            const customer: Customer | Admin = result[0][0];
 
             if (customer != null) {
 
@@ -94,7 +121,15 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
                 if (validPassword) {
 
                     const now = new Date(Date.now() + 1 * (60 * 60 * 1000)).toISOString().slice(0, 19).replace('T', ' ');
-                    await connection?.query(`UPDATE Customers SET lastLogin="${now}" WHERE email = "${email}";`);
+
+                    if (email === 'carlos@carlos.com') {
+
+                        await connection?.query(`UPDATE Admin_Users SET lastLogin="${now}" WHERE email = "${email}";`);
+                    }
+                    else {
+
+                        await connection?.query(`UPDATE Customers SET lastLogin="${now}" WHERE email = "${email}";`);
+                    }
 
                     const id = customer.id;
 
@@ -143,17 +178,16 @@ export const loginCustomer = async (req: Request, res: Response): Promise<Respon
 
 }
 
-
 export const checkPassword = async (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params;
     const { password } = req.body;
 
     try {
-        
+
         const connection = await dbConnection();
         const result = await connection?.query<ResultSetHeader[]>(`SELECT password FROM Customers WHERE id = "${id}";`);
-        
+
         if (result != null) {
 
             const currentPassword: string = Object.values(result[0][0])[0];

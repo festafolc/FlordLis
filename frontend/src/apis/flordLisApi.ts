@@ -14,7 +14,7 @@ const flordLisApi = axios.create({
 // Interceptor configuration
 flordLisApi.interceptors.request.use( async (config) => {
 
-    const token = await localStorage.getItem('token');
+    const token = await sessionStorage.getItem('token');
 
     if (token != null) {
 

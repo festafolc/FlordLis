@@ -3,6 +3,11 @@ import { updateCustomerInfoById, getCustomerFullInfoById, updatePasswordByUser }
 import { formValidator } from '../middlewares/formValidator';
 import { check } from 'express-validator';
 
+/*
+    Customer routes
+    host + /flordlis/customer
+*/
+
 const customerRouter = Router();
 
 customerRouter.get('/:id', getCustomerFullInfoById);

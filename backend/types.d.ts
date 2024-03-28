@@ -33,3 +33,15 @@ export interface Product extends RowDataPacket {
     createdAt: string;
     updatedAt?: string;
 }
+
+export interface Admin extends RowDataPacket {
+
+    id: number;
+    adminType: number;
+    phone?: string;
+    email: string;
+    password: string;
+    lastLogin: string;
+    createdAt: string;
+    updatedAt?: string;
+}

@@ -40,14 +40,14 @@ export const RegisterPage = () => {
       try {
 
         const { data } = await flordLisApi.post('/register', { name, surname, phone, email, password, activeNotifications });
-
+        
         if (data.ok) {
 
           setShowRegisterError(false);
           dispatch(loginThunk(data.id));
 
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('token-init-date', new Date().getTime().toString());
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('token-init-date', new Date().getTime().toString());
 
           navigate("/");
         }

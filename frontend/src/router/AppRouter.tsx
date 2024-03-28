@@ -28,8 +28,7 @@ const AppRouter = () => {
   return (
     <Routes>
         <Route path="/auth/*" element={ <AuthRoutes />} />
-
-        <Route path="/*" element={ <FlordLisRoutes />} />
+        <Route path="/*" element={ <FlordLisRoutes /> } />
     </Routes>
   )
 }

@@ -14,39 +14,49 @@ import { EcoFlordLisPage } from "../pages/shop/EcoflordLis/EcoFlordLisPage"
 import { FlordlisHomePage } from "../pages/shop/FlordLisHome/FlordlisHomePage"
 import { InvoicePage } from "../pages/Profile/Invoice/InvoicePage"
 import { PersonalProduct } from "../pages/PersonalProduct/PersonalProduct"
+import { BackofficePage } from "../../backOffice/pages/BackofficePage"
+import { FlordLisState } from "../../redux/slices/flordLisSlice"
 
 export const FlordLisRoutes = () => {
 
   const { status } = useFlordLisSelector<AuthState>((state) => state.auth);
+  const { CRUD, Read} = useFlordLisSelector<FlordLisState>((state) => state.flordLis);
 
   return (
     <>
       <NavBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          {/* <Route path="/events" element={<EventsPage />} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/events" element={<EventsPage />} />
           <Route path="/advices" element={<AdvicesPage />} /> */}
-          <Route path="/shop" element={<AllProductsPage />} />
-          <Route path="/shop/ecoflordlis" element={<EcoFlordLisPage />} />
-          <Route path="/shop/flordlishome" element={<FlordlisHomePage />} />
-          <Route path="/shop/categories/:name" element={<CategoryPage />} />
-          <Route path="/shop/:id" element={<ProductPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/request-personal-design" element={<PersonalProduct />} />
+        <Route path="/shop" element={<AllProductsPage />} />
+        <Route path="/shop/ecoflordlis" element={<EcoFlordLisPage />} />
+        <Route path="/shop/flordlishome" element={<FlordlisHomePage />} />
+        <Route path="/shop/categories/:name" element={<CategoryPage />} />
+        <Route path="/shop/:id" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/request-personal-design" element={<PersonalProduct />} />
 
-          {
-            (status === "authenticated")
-              ?
-              <Route>
-                <Route path="/profile/information" element={<ProfileInformationPage />} />
-                <Route path="/profile/orders/invoice/:id" element={<InvoicePage />} />
-              </Route>
-              :
-              null
-          }
-          
-          <Route path="/*" element={<Navigate to="/" />} />
-        </Routes >
+        {
+          (status === "authenticated")
+            ?
+            <Route>
+              <Route path="/profile/information" element={<ProfileInformationPage />} />
+              <Route path="/profile/orders/invoice/:id" element={<InvoicePage />} />
+              {
+                (CRUD || Read)
+                  ?
+                  <Route path="/backoffice/*" element={<BackofficePage />} />
+                  :
+                  null
+              }
+            </Route>
+            :
+            <Route path='/' element={<Navigate to="/auth/login" />} />
+        }
+
+        <Route path="/*" element={<Navigate to="/" />} />
+      </Routes >
     </>
   )
 }

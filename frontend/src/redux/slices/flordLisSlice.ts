@@ -1,13 +1,15 @@
 import { Slice, createSlice } from '@reduxjs/toolkit';
 
-interface FlordLisState {
+export interface FlordLisState {
 
-    isLogged: boolean
+    CRUD: boolean;
+    Read: boolean;
 }
 
 const initialState: FlordLisState = {
 
-    isLogged: false
+    CRUD: false,
+    Read: false,
 }
 
 export const flordLisSlice: Slice = createSlice({
@@ -16,16 +18,27 @@ export const flordLisSlice: Slice = createSlice({
     initialState,
     reducers: {
         
-        actionLogin: ( state ) => {
+        onAdminLogin: ( state, action ) => {
 
-            state.isLogged = true;
+            const email = action.payload;
+
+            if (email === 'carlos@carlos.com') {
+
+                state.CRUD = true;
+            }
+            else {
+
+                state.Read = true;
+            }
+
         },
 
-        actionLogout: ( state ) => {
+        onAdminLogout: ( state ) => {
 
-            state.isLogged = false;
+            state.CRUD = false;
+            state.Read = false;
         },
     }
 });
 
-export const { actionLogin, actionLogout } = flordLisSlice.actions;
+export const { onAdminLogin, onAdminLogout } = flordLisSlice.actions;

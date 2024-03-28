@@ -8,6 +8,8 @@ import { CustomerState } from "../../../redux/slices/customerSlice";
 import { changePasswordThunk } from "../../../redux/thunks/customerThunks";
 import './profileInformationPageStyle.css';
 import { ChangePassword } from "./ChangePassword/ChangePassword";
+import { FlordLisState } from "../../../redux/slices/flordLisSlice";
+import { Link } from "react-router-dom";
 
 export const ProfileInformationPage = () => {
 
@@ -19,12 +21,19 @@ export const ProfileInformationPage = () => {
   const [customerFullInfo, setCustomerFullInfo] = useState({});
 
   const { userId } = useFlordLisSelector<AuthState>((state) => state.auth);
+  const { CRUD, Read } = useFlordLisSelector<FlordLisState>((state) => state.flordLis);
 
   useEffect(() => {
 
     if (userId != undefined) {
 
-      getCustomerFullInfo(userId);
+      if (CRUD || Read) {
+        // TODO: Petición a la table Admin
+      }
+      else {
+
+        getCustomerFullInfo(userId);
+      }
     }
   }, []);
 
@@ -45,6 +54,7 @@ export const ProfileInformationPage = () => {
   }
 
   const changePassword = () => {
+
     dispatch(changePasswordThunk());
   }
 
@@ -54,19 +64,6 @@ export const ProfileInformationPage = () => {
         (customerFullInfo)
           ?
           <section className="container__profile">
-
-            {/* <ul className='nav__list'>
-              <li className='nav__item'>
-                <Link className='nav__link' to='/profile/information'>Perfil
-                  <i className='nav__icon fa-solid fa-user'></i>
-                </Link>
-              </li>
-              <li className='nav__item'>
-                <button className='nav__link nav__link-button' onClick={logout}>Cerrar sesión
-                  <i className='nav__icon fa-solid fa-right-from-bracket'></i>
-                </button>
-              </li>
-            </ul> */}
             <nav className="profile__nav">
               <ul className="nav__options">
                 <li className="option__button" onClick={() => setShowCustomerInfo(true)}>

@@ -9,6 +9,7 @@ import flordLisLogo from '../../../assets/images/ecoflordlis.jpg';
 import sunflower from '../../../assets/images/sunflower.png';
 import waterColourFlower from '../../../assets/images/sunflower.png';
 import './loginPageStyle.css';
+import { adminLoginThunk, adminLogoutThunk } from "../../../redux/thunks/flordLisThunks";
 
 
 const loginFormFields: {} = {
@@ -43,14 +44,24 @@ export const LoginPage = () => {
 
         dispatch(loginThunk(data.id));
 
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('token-init-date', new Date().getTime().toString());
+        if (email === 'carlos@carlos.com') {
+          
+          dispatch(adminLoginThunk(email));
+          sessionStorage.setItem('admin', 'CRUD');
+        }
+        else {
+          // TODO
+        }
+
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('token-init-date', new Date().getTime().toString());
 
         //TODO: en vez de enviar al home page mejor enviarlo a donde estaba
         navigate("/");
       }
     } catch (error) {
-
+      
+      dispatch(adminLogoutThunk())
       dispatch(logoutThunk('Credentials are not valid.'));
     }
     finally {

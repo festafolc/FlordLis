@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 export const createJWT = (id: string) => {
 
     return new Promise((resolve, reject) => {
+        
         const payload = { id };
 
         if (process.env.SECRET_JWT_SEED != undefined) {

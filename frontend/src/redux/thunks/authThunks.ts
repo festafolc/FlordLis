@@ -1,7 +1,9 @@
 import flordLisApi from "../../apis/flordLisApi";
 import { onChecking, onClearErrorMessage, onLogin, onLogout } from "../slices/authSlice";
 import { onRemoveAllProductsFromCart } from "../slices/cartSlice";
+import { onAdminLogout } from "../slices/flordLisSlice";
 import { FlordLisDispatch } from '../store';
+import { adminLoginThunk } from "./flordLisThunks";
 
 export const loginThunk = (userId: number) => {
 
@@ -16,7 +18,7 @@ export const logoutThunk = (errorMessage: string) => {
 
     return (dispatch: FlordLisDispatch) => {
 
-        localStorage.clear();
+        sessionStorage.clear();
         dispatch(onLogout(errorMessage));
         setTimeout(() => {
             dispatch(onClearErrorMessage());
@@ -29,25 +31,39 @@ export const checkAuthTokenThunk = () => {
 
     return async (dispatch: FlordLisDispatch) => {
 
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
 
         if (token != null) {
 
             try {
 
                 const {data} = await flordLisApi.get('/renew');
-
+                
                 if (data.ok) {
 
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('token-init-date', new Date().getTime().toString());
+                    const admin = sessionStorage.getItem('admin');
 
-                    dispatch(onLogin(data.id))
+                    if (admin != null) {
+
+                        if (admin === 'CRUD') {
+
+                            dispatch(adminLoginThunk('carlos@carlos.com'));
+                        }
+                        else {
+                            // TODO:
+                        }
+                    }
+
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('token-init-date', new Date().getTime().toString());
+
+                    dispatch(loginThunk(data.id))
                 }
                 
             } catch (error) {
 
-                localStorage.clear();
+                sessionStorage.clear();
+                dispatch(onAdminLogout(''));
                 dispatch(onLogout(''));
             }
         }

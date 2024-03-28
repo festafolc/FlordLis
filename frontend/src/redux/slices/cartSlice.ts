@@ -28,7 +28,7 @@ export const cartSlice = createSlice({
 
                 state.productsToBuy = [...state.productsToBuy, product];
 
-                localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
+                sessionStorage.setItem('cart', JSON.stringify(state.productsToBuy));
 
                 state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
             }
@@ -37,7 +37,7 @@ export const cartSlice = createSlice({
         onRemoveProductFromCart: (state, action) => {
 
             state.productsToBuy = state.productsToBuy.filter(product => action.payload.id !== product.id);
-            localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
+            sessionStorage.setItem('cart', JSON.stringify(state.productsToBuy));
 
             state.totalPrice = state.productsToBuy.reduce((accumulator, product) => Number(accumulator) + Number(product.price), 0);
         },
@@ -45,14 +45,14 @@ export const cartSlice = createSlice({
         onRemoveAllProductsFromCart: (state) => {
 
             state.productsToBuy = [];
-            localStorage.setItem('cart', JSON.stringify(state.productsToBuy));
+            sessionStorage.setItem('cart', JSON.stringify(state.productsToBuy));
 
             state.totalPrice = 0;
         },
 
         onRefreshAllProductsInCart: (state) => {
 
-            const productsInCart = localStorage.getItem('cart');
+            const productsInCart = sessionStorage.getItem('cart');
 
             if (productsInCart != null) {
 

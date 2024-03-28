@@ -55,7 +55,6 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
             msg: 'An expected error occurred.',
         });
     }
-
 }
 
 export const updateCustomerInfoById = async (req: Request, res: Response) => {
