@@ -50,7 +50,7 @@ export const LoginPage = () => {
           sessionStorage.setItem('admin', 'CRUD');
         }
         else {
-          // TODO
+          // TODO: eliminar el admin del session por si acaso
         }
 
         sessionStorage.setItem('token', data.token);
@@ -104,56 +104,6 @@ export const LoginPage = () => {
         </div>
         <img className="sunflower_img" src={sunflower} alt="Imagen girasol" />
       </section>
-      {/* {showModal && 
-      <div className="modal position-absolute justify-content-center align-items-center" style={{display: 'block'}}>
-        <Modal.Dialog>
-          <Modal.Body>
-            <p>Credentials are not valid.</p>
-            <Button variant="secondary" onClick={onCloseErrorMessage}>Close</Button>
-          </Modal.Body>
-        </Modal.Dialog>
-      </div>
-      <div>LoginPage</div>
-      }
-
-       <Container className="position-relative">
-        <Row className="h1 justify-content-center align-items-center mt-5">
-          Flor d' Lis
-        </Row>
-        <Row className="d-flex justify-content-center align-items-center">
-          <Col className="col-xl-10">
-            <Card>
-              <Row g-0="true">
-                <Col md-6="true" lg-5="true">
-                  <Card.Img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                    alt="login form" />
-                </Col>
-                <Col className="mc-6 lg-7 d-flexalign-items-center">
-                  <Card.Body className="p-4 p-lg-5 text-black">
-                    <Form onSubmit={loginSubmit}>
-
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Correo electrónico</Form.Label>
-                        <Form.Control type="email" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange} />
-                      </Form.Group> */
-
-                      /* <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Contraseña</Form.Label>
-                        <Form.Control type="password" placeholder="Contraseña" name="password" value={password || ''} onChange={onInputChange} />
-                      </Form.Group>
-
-                      <Button variant="primary" type="submit">
-                        Login
-                      </Button>
-
-                    </Form>
-                  </Card.Body>
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-      </Container >   */}
     </>
   )
 }

@@ -14,8 +14,8 @@ import { EcoFlordLisPage } from "../pages/shop/EcoflordLis/EcoFlordLisPage"
 import { FlordlisHomePage } from "../pages/shop/FlordLisHome/FlordlisHomePage"
 import { InvoicePage } from "../pages/Profile/Invoice/InvoicePage"
 import { PersonalProduct } from "../pages/PersonalProduct/PersonalProduct"
-import { BackofficePage } from "../../backOffice/pages/BackofficePage"
 import { FlordLisState } from "../../redux/slices/flordLisSlice"
+import { BackofficeRoutes } from "../../backOffice/routes/BackofficeRoutes"
 
 export const FlordLisRoutes = () => {
 
@@ -46,7 +46,7 @@ export const FlordLisRoutes = () => {
               {
                 (CRUD || Read)
                   ?
-                  <Route path="/backoffice/*" element={<BackofficePage />} />
+                  <Route path="/backoffice/*" element={<BackofficeRoutes />} />
                   :
                   null
               }
