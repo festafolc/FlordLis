@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from '../../../../hooks/useForm';
 import flordLisApi from '../../../../apis/flordLisApi';
 import { useFlordLisDispatch, useFlordLisSelector } from '../../../../hooks/useFlordLis';
 import { AuthState } from '../../../../redux/slices/authSlice';
 // import { ChangePassword } from './ChangePassword';
-import { CustomerState, onUpdatePhoneError, onCustomerInformationWasUpdatedOrNot, onUpdateCustomerInformation } from '../../../../redux/slices/customerSlice';
-import { changePasswordThunk } from '../../../../redux/thunks/customerThunks';
+import { MessageBox } from '../../../components/MessageBox/MessageBox';
+import { CustomerState, onUpdatePhoneError, onCustomerInformationWasUpdatedOrNot } from '../../../../redux/slices/customerSlice';
+import {
+    askingToUpdateCustomerThunk,
+    changePasswordThunk,
+    operationSuccessCustomerThunk,
+    updateCustomerThunk,
+    resetAllButOperationSuccessThunk,
+    resetCustomerSliceThunk
+} from '../../../../redux/thunks/customerThunks';
 
 import './basicInformationStyle.css';
+import { MessageBoxState, onResetMessageBoxSlice } from '../../../../redux/slices/messageBoxSlice';
+import { resetMessageBoxThunk } from '../../../../redux/thunks/messageBoxThunks';
 
 
 export const BasicInformation = ({ customerFullInfo }: any) => {
@@ -16,7 +26,8 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
 
         name: customerFullInfo.name,
         surname: customerFullInfo.surname,
-        phone: customerFullInfo.phone,
+        countryPhone: '+57',
+        phone: customerFullInfo.phone.slice(3),
         email: customerFullInfo.email,
         country: customerFullInfo.country,
         city: customerFullInfo.city,
@@ -28,32 +39,80 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
 
     const dispatch = useFlordLisDispatch();
     const { userId } = useFlordLisSelector<AuthState>((state) => state.auth);
-    // const { checkingPassword, updateCustomer, updateCustomerPhone } = useFlordLisSelector<CustomerState>((state) => state.customer);
+    const { askingToUpdateCustomer, updateCustomer, operationSuccess } = useFlordLisSelector<CustomerState>((state) => state.customer);
+    const { ok, cancel, close } = useFlordLisSelector<MessageBoxState>((state) => state.messageBox);
+
 
     const [activeNotifications, setActiveNotifications] = useState<boolean>(customerFullInfo.activeNotifications);
 
-    const { name, surname, phone, email, country, city, postalCode, address, onInputChange } = useForm(profileInfo);
+    const { name, surname, countryPhone, phone, email, country, city, postalCode, address, onInputChange } = useForm(profileInfo);
 
     // TODO: Crear un boolean para saber si se ha cambiado algo y así guardar de momento lo hago todo a saco
 
-    const saveSubmit: any = async (event: React.MouseEvent<HTMLElement>) => {
+    useEffect(() => {
 
-        event.preventDefault();
+        // Si lo ha confirmado en el message box (messageBox.ok = true), procedemos a marcar el estado updateCustomer en Redux
+        if (ok) {
 
-        try {
+            // updateCustomer = true
+            dispatch(updateCustomerThunk());
 
-            const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, phone, country, city, postalCode, address, activeNotifications });
+            if (updateCustomer) {
 
-            if (data.ok) {
-
-                dispatch(onUpdateCustomerInformation());
+                saveSubmit();
             }
-        } catch (error: any) {
+        }
 
-            if (error.response.data.error.code === 'ER_DUP_ENTRY') {
+        // Si cancela en la pregunta o cierra después de guardado entonces reseteamos estados en Redux
+        if (cancel || close) {
 
-                dispatch(onUpdatePhoneError());
+            dispatch(resetMessageBoxThunk());
+            dispatch(resetCustomerSliceThunk());
+        }
+
+    }, [ok, cancel, close, updateCustomer])
+
+    const AskToUpdateCustomer = () => {
+
+        // Sacamos el message box para confirmar -> askingToUpdateCustomer = true
+        dispatch(askingToUpdateCustomerThunk());
+    }
+
+    const saveSubmit: any = async () => {
+
+        // event.preventDefault();
+        let saved: boolean = false;
+        // Finalmente procedemos
+        if (updateCustomer) {
+
+            try {
+
+                const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, phone, country, city, postalCode, address, activeNotifications });
+
+                if (data.ok) {
+
+                    // Si ha ido todo bien lo marcamos en Redux para sacar el message box
+                    dispatch(operationSuccessCustomerThunk());
+                    saved = true;
+                }
+            } catch (error: any) {
+
+                if (error.response.data.error.code === 'ER_DUP_ENTRY') {
+
+                    dispatch(onUpdatePhoneError());
+                }
             }
+        }
+
+        // Reseteamos los estados
+        dispatch(resetMessageBoxThunk());
+        if (saved) {
+
+            dispatch(resetAllButOperationSuccessThunk())
+        }
+        else {
+
+            dispatch(resetCustomerSliceThunk());
         }
     }
 
@@ -76,7 +135,7 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
         <>
             <section className='container__customer'>
                 <h2 className='customer__title'>Información personal</h2>
-                <form className='customer__form'>
+                <form className='customer__form' onSubmit={saveSubmit}>
                     <ul className='form__information'>
                         <li className='form__element'>
                             <div className='element__left'>Nombre</div>
@@ -88,7 +147,12 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                         </li>
                         <li className='form__element'>
                             <div className='element__left'>Teléfono</div>
-                            <input className="element__right" type="text" placeholder="Teléfono" name="phone" value={phone || ''} onChange={onInputChange} />
+                            <div className="element__right element__right-phone">
+                                <select className='register__input-phone-prefix' name="countryPhone" value={countryPhone || ''} onChange={onInputChange} >
+                                    <option value="Colombia">🇨🇴&emsp;Colombia +57</option>
+                                </select>
+                                <input className="element__right" type="text" placeholder="Teléfono" name="phone" value={phone || ''} onChange={onInputChange} />
+                            </div>
                         </li>
                         <li className='form__element'>
                             <div className='element__left'>Correo electrónico</div>
@@ -119,147 +183,18 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                         </li>
                     </ul>
                 </form>
+                <button className='element__left' onClick={AskToUpdateCustomer}>Guardar información</button>
+                {
+                    (askingToUpdateCustomer)
+                        ? <MessageBox title="Actualizar información" description="¿Deseas guardar la información actual de tu perfil?" closeButton={false} />
+                        : null
+                }
+                {
+                    (operationSuccess)
+                        ? <MessageBox title="Flor d' Lis" description="La información ha sido guardada." closeButton={true} />
+                        : null
+                }
             </section>
-
-            {/* <Modal show={updateCustomer} onHide={onCloseModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Perfil actualizado </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>La información ha sido guardado con éxito.</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
-                </Modal.Footer>
-            </Modal>
-
-            <Modal show={updateCustomerPhone} onHide={onCloseModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Error en el guardado de la información </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>EL número de teléfono no es válido.</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={onCloseModal}>Cerrar</Button>
-                </Modal.Footer>
-            </Modal>
-
-            <Container className='mx-5' >
-                <Container className='mx-5' style={{ width: '55rem' }}>
-                    <Form onSubmit={saveSubmit}>
-
-                        <Row>
-                            <Col className='mt-2'><strong>Nombre</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formName">
-                                    <Form.Control className='form-control-plaintext' type="text" name="name" value={name || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Apellidos</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formSurname">
-                                    <Form.Control className='form-control-plaintext' type="text" name="surname" value={surname || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Teléfono</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formPhone">
-                                    <Form.Control className='form-control-plaintext' type="text" name="phone" value={phone || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Correo electrónico</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formEmail">
-                                    <Form.Control className='form-control-plaintext' readOnly type="email" name="email" value={email || ''} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>País</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formCountry">
-                                    <Form.Control className='form-control-plaintext' type="text" name="country" value={country || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Ciudad</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formCity">
-                                    <Form.Control className='form-control-plaintext' type="text" name="city" value={city || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Código postal</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formPostalCode">
-                                    <Form.Control className='form-control-plaintext' type="text" name="postalCode" value={postalCode || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Dirección</strong></Col>
-                            <Col>
-                                <Form.Group controlId="formAddress">
-                                    <Form.Control className='form-control-plaintext' type="text" name="address" value={address || ''} onChange={onInputChange} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col className='mt-2'><strong>Notificaciones activas</strong></Col>
-                            <Col className='mt-2'>
-                                <Form.Group controlId="formNotifications">
-                                    <Form.Check type="checkbox" name="activeNotifications" checked={activeNotifications} onChange={onActiveNotificationsChange} label="Deseo recibir emails con novedades" />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <hr />
-
-                        <Row>
-                            <Col>
-                                <Button onClick={handlePasswordOpen}>Cambiar Contraseña</Button>
-                            </Col>
-                            <Col>
-                                <Button className='bg-secondary' type='submit'>
-                                    Guardar información
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Form>
-
-                    {
-                        (checkingPassword)
-                            ? <ChangePassword />
-                            : null
-                    }
-
-
-                </Container>
-            </Container> */}
         </>
     )
 }

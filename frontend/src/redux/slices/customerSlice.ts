@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface CustomerState {
 
+    askingToUpdateCustomer: boolean;
     updateCustomer: boolean;
+    operationSuccess: boolean;
     checkingPassword: boolean;
     changingPassword: boolean;
     updateCustomerPhone: boolean;
@@ -10,7 +12,9 @@ export interface CustomerState {
 
 const initialState: CustomerState = {
 
+    askingToUpdateCustomer: false,
     updateCustomer: false,
+    operationSuccess: false,
     checkingPassword: false,
     changingPassword: false,
     updateCustomerPhone: false
@@ -21,11 +25,36 @@ export const customerSlice = createSlice({
     name: 'customer',
     initialState,
     reducers: {
-        
-        onUpdateCustomerInformation: (state) => {
+
+        onAskingToUpdateCustomer: (state) => {
+            
+            state.askingToUpdateCustomer = true;
+        },
+
+        onUpdateCustomer: (state) => {
 
             state.updateCustomer = true;
         },
+
+        onOperationSuccessCustomer: (state) => {
+
+            state.operationSuccess = true;
+            state.askingToUpdateCustomer = false;
+            state.updateCustomer = false;
+        },
+
+        onResetAllButOperationSuccess: (state) => {
+
+            state.askingToUpdateCustomer = false;
+            state.updateCustomer = false;
+            state.operationSuccess = true;
+            state.checkingPassword = false;
+            state.changingPassword = false;
+            state.updateCustomerPhone = false;
+        },
+
+
+
 
         onUpdatePhoneError: (state) => {
 
@@ -34,7 +63,7 @@ export const customerSlice = createSlice({
 
         onCustomerInformationWasUpdatedOrNot: (state) => {
 
-            state.updateCustomer = false;
+            state.askingToUpdateCustomer = false;
             state.updateCustomerPhone = false;
         },
 
@@ -58,13 +87,27 @@ export const customerSlice = createSlice({
             state.checkingPassword = false;
             state.changingPassword = false;
         },
+
+        onResetCustomerSlice: (state) => {
+
+            state.askingToUpdateCustomer = false;
+            state.updateCustomer = false;
+            state.operationSuccess = false;
+            state.checkingPassword = false;
+            state.changingPassword = false;
+            state.updateCustomerPhone = false;
+        }
     }
 });
 
-export const { onUpdateCustomerInformation,
+export const { onAskingToUpdateCustomer,
+               onUpdateCustomer,
+               onResetAllButOperationSuccess,
+               onOperationSuccessCustomer,
                onUpdatePhoneError,
                onCustomerInformationWasUpdatedOrNot,
                onChangingPasswordWasUpdated,
                onChangingPasswordWasUpdatedOrFailed,
                onChangePassword,
-               onChangePasswordWasUpdated } = customerSlice.actions;
+               onChangePasswordWasUpdated,
+               onResetCustomerSlice } = customerSlice.actions;

@@ -26,7 +26,7 @@
 
 .carousel__card {
     position: relative;
-    flex: 0 0 16rem;
+    flex: 0 0 20rem;
     border-radius: 0.5rem;
     box-shadow: 1px 5px 15px #277924;
     transition: all 0.5s ease-in-out;

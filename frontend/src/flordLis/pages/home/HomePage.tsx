@@ -28,8 +28,8 @@ export const HomePage = () => {
         <section className='container__banner'>
           <div className='banner__content'>
             <img className='banner__img' src={banner} />
-            <h1 className='banner__title'>Bienvenido</h1>
-            <h4 className='banner__subtitle'>Algo bonito para decir</h4>
+            <h1 className='banner__title'>Somos flores, somos vida</h1>
+            <h4 className='banner__subtitle'>Flor d' Lis</h4>
           </div>
         </section>
 
@@ -47,9 +47,28 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* PRODUCTS */}
+        {/* PRODUCTS ECO FLOR D' LIS */}
         <section className='container__products'>
-          <h2 className='products__main-title'>Te puede interesar...</h2>
+          <h2 className='products__main-title'>No tires, ¡reutiliza! Productos con los que harás la diferencia con la tierra</h2>
+          <div className='products__container'>
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+          </div>
+          <div className='products__container'>
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+            <ProductCardHome />
+          </div>
+        </section>
+
+        {/* PRODUCTS FLOR D' LIS HOME*/}
+        <section className='container__products'>
+          <h2 className='products__main-title'>Flores que hacen de tu casa un lugar especial. ESTA PARTE DEBE SER MÁS CREATIVA</h2>
           <div className='products__container'>
             <ProductCardHome />
             <ProductCardHome />

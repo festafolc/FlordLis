@@ -7,13 +7,14 @@ import { Admin, Customer } from '../../types';
 
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
-    const { name, surname, phone, email, password, activeNotifications } = req.body;
-
+    const { name, surname, fullPhoneNumber, email, password, activeNotifications } = req.body;
+    
     try {
 
         const connection = await dbConnection();
 
         let result;
+        // Check if the email already exist
         if (email === 'carlos@carlos.com') {
 
             result = await connection?.query<Customer[]>(`SELECT * FROM Admin_Users WHERE email = "${email}";`);
@@ -23,8 +24,11 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
             result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
         }
 
+        // TODO: Check if the phone already exists
+
         if (result != null) {
 
+            // I should check the customer in the previous if
             const customer: Customer = result[0][0];
             if (customer == null) {
 
@@ -35,12 +39,12 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                 if (email === 'carlos@carlos.com') {
 
                     newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Admin_Users (admin_type, phone, email, password, isDeleted)
-                                                                            VALUES (${2}, "${phone}", "${email}", "${encrypted}", ${false});`);
+                                                                            VALUES (${2}, "${fullPhoneNumber}", "${email}", "${encrypted}", ${false});`);
                 }
                 else {
 
                     newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
-                                                                                  VALUES ("${name}", "${surname}", "${phone}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
+                                                                                  VALUES ("${name}", "${surname}", "${fullPhoneNumber}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
                 }
 
                 if (newCustomer != null) {

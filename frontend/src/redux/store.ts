@@ -7,6 +7,7 @@ import { customerSlice } from './slices/customerSlice';
 import { flordLisSlice } from './slices/flordLisSlice';
 import { filterProductsSlice } from './slices/filterProductsSlice';
 import { cartSlice } from './slices/cartSlice';
+import { messageBoxSlice } from './slices/messageBoxSlice';
 
 export const store: ToolkitStore = configureStore({
     reducer: {
@@ -14,7 +15,8 @@ export const store: ToolkitStore = configureStore({
         customer: customerSlice.reducer,
         flordLis: flordLisSlice.reducer,
         filterProducts: filterProductsSlice.reducer,
-        cart: cartSlice.reducer
+        cart: cartSlice.reducer,
+        messageBox: messageBoxSlice.reducer
     }
 });
 

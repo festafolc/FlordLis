@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom'
-import { Carousel } from '../Carousel/Carousel'
+import { Link } from 'react-router-dom';
+import { Carousel } from '../Carousel/Carousel';
+
+import './requestPersonalProduct.css';
 
 export const RequestPersonalProduct = () => {
     return (

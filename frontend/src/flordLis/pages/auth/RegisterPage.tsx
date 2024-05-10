@@ -8,13 +8,16 @@ import flordLisLogo from '../../../assets/images/ecoflordlis.jpg';
 import waterColourFlower1 from '../../../assets/images/waterColourFlower1.png';
 import waterColourFlower2 from '../../../assets/images/waterColourFlower2.png';
 import lilyFlower1 from '../../../assets/images/lilyflower1.png';
+import colombiaFlag from '../../../assets/images/countryFlags/Flag_of_Colombia.png';
 import './registerPageStyle.css';
+import { validatePhoneNumber } from '../../helpers/validatePhoneNumber';
 
 const registerFormFields: {} = {
   name: '',
   surname: '',
   email: '',
   phone: '',
+  countryPhone: '+57',
   password: '',
   password2: '',
 }
@@ -29,18 +32,27 @@ export const RegisterPage = () => {
 
   const [activeNotifications, setActiveNotifications] = useState<boolean>(false);
 
-  const { name, surname, phone, email, password, password2, onInputChange, onResetForm } = useForm(registerFormFields);
+  const { name, surname, email, countryPhone, phone, password, password2, onInputChange, onResetForm } = useForm(registerFormFields);
 
   const registerSubmit: any = async (event: React.MouseEvent<HTMLElement>) => {
 
     event.preventDefault();
+    
+    let canSave: boolean = true;
 
-    if (password === password2) {
+    // Check the number is colombian
+    canSave = validatePhoneNumber(phone);
+
+    // Check Phone country and phone
+    // De momento como solo permito Colombia, no hago el checkeo de país + número porque siempre será Colombia
+    const fullPhoneNumber: string = countryPhone + phone;
+
+    if (password === password2 && canSave) {
 
       try {
 
-        const { data } = await flordLisApi.post('/register', { name, surname, phone, email, password, activeNotifications });
-        
+        const { data } = await flordLisApi.post('/register', { name, surname, fullPhoneNumber, email, password, activeNotifications });
+
         if (data.ok) {
 
           setShowRegisterError(false);
@@ -78,7 +90,12 @@ export const RegisterPage = () => {
                   <input className="register__input" type="text" placeholder="Nombre" name="name" value={name || ''} onChange={onInputChange} />
                   <input className="register__input" type="text" placeholder="Apellidos" name="surname" value={surname || ''} onChange={onInputChange} />
                   <input className="register__input" type="email" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange} />
-                  <input className="register__input" type="text" placeholder="Teléfono" name="phone" value={phone || ''} onChange={onInputChange} />
+                  <div className="register__input register__inputs-phone">
+                    <select className='register__input-phone-prefix' name="countryPhone" value={countryPhone || ''} onChange={onInputChange} >
+                      <option value="Colombia">🇨🇴&emsp;Colombia +57</option>
+                    </select>
+                    <input className="register__input" type="text" placeholder="Teléfono" name="phone" value={phone || ''} onChange={onInputChange} />
+                  </div>
                   <input className="register__input" type="password" placeholder="Contraseña" name="password" value={password || ''} onChange={onInputChange} />
                   <input className="register__input" type="password" placeholder="Repite la contraseña" name="password2" value={password2 || ''} onChange={onInputChange} />
                   <div className="register__input-notifications">
@@ -107,87 +124,6 @@ export const RegisterPage = () => {
         <img className="register__waterColourFlower2" src={waterColourFlower2} alt="Imagen planta" />
         <img className="register__lilyFlower1" src={lilyFlower1} alt="Imagen flor de lirio" />
       </section>
-
-      {/*  
-        // <div className="modal position-absolute justify-content-center align-items-center" style={{ display: 'block' }}>
-        //   <Modal.Dialog>
-        //     <Modal.Body>
-        //       <p>Try with another email.</p>
-        //       <Button variant="secondary" onClick={onCloseErrorMessage}>Close</Button>
-        //     </Modal.Body>
-        //   </Modal.Dialog>
-        // </div> */}
-
-
-
-      {/* <Container className="position-relative">
-        <Row className="h1 justify-content-center align-items-center mt-5">
-          Flor d' Lis
-        </Row>
-        <Row className="d-flex justify-content-center align-items-center">
-          <Col className="col-xl-10">
-            <Card>
-              <Row g-0="true">
-                <Col md-6="true" lg-5="true">
-                  <Card.Img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                    alt="login form" />
-                </Col>
-                <Col className="mc-6 lg-7 d-flexalign-items-center">
-                  <Card.Body className="p-4 p-lg-5 text-black">
-                    <Form onSubmit={registerSubmit}> */}
-
-      {/* Name */}
-      {/* <Form.Group className="mb-3" controlId="formBasicName">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="phone" placeholder="Nombre" />
-                      </Form.Group> */}
-
-      {/* Surname */}
-      {/* <Form.Group className="mb-3" controlId="formBasicSurname">
-                        <Form.Label>Apellidos</Form.Label>
-                        <Form.Control type="phone" placeholder="Apellidos" />
-                      </Form.Group> */}
-
-      {/* Email */}
-      {/* <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Correo electrónico</Form.Label>
-                        <Form.Control type="email" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange} />
-                      </Form.Group> */}
-
-      {/* Phone */}
-      {/* <Form.Group className="mb-3" controlId="formBasicPhone">
-                        <Form.Label>Número de teléfono</Form.Label>
-                        <Form.Control type="phone" placeholder="Número de teléfono" />
-                      </Form.Group> */}
-
-      {/* Password */}
-      {/* <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Contraseña</Form.Label>
-                        <Form.Control type="password" placeholder="Contraseña" name="password" value={password || ''} onChange={onInputChange} />
-                      </Form.Group> */}
-
-      {/* Password2 */}
-      {/* <Form.Group className="mb-3" controlId="formBasicPassword2">
-                        <Form.Label>Repite la contraseña</Form.Label>
-                        <Form.Control type="password" placeholder="Repite la contraseña" name="password2" value={password2 || ''} onChange={onInputChange} />
-                      </Form.Group> */}
-
-      {/* Notifications */}
-      {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" name="activeNotifications" checked={activeNotifications} onChange={onActiveNotificationsChange} label="Deseo recibir emails con novedades" />
-                      </Form.Group>
-
-                      <Button variant="primary" type="submit">
-                        Registrarse
-                      </Button>
-                    </Form>
-                  </Card.Body>
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-      </Container > */}
     </>
   )
 }
