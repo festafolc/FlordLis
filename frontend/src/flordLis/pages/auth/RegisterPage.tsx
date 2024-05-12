@@ -38,7 +38,7 @@ export const RegisterPage = () => {
 
     event.preventDefault();
     
-    let canSave: boolean = true;
+    let canSave: boolean = false;
 
     // Check the number is colombian
     canSave = validatePhoneNumber(phone);
@@ -52,7 +52,7 @@ export const RegisterPage = () => {
       try {
 
         const { data } = await flordLisApi.post('/register', { name, surname, fullPhoneNumber, email, password, activeNotifications });
-
+        
         if (data.ok) {
 
           setShowRegisterError(false);

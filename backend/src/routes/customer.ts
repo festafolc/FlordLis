@@ -12,7 +12,15 @@ const customerRouter = Router();
 
 customerRouter.get('/:id', getCustomerFullInfoById);
 
-customerRouter.put('/:id', updateCustomerInfoById);
+customerRouter.put('/:id',
+    [
+        check('name', "Please, provide your name").not().isEmpty(),
+        check('surname', "Please, your surname").not().isEmpty(),
+        check('fullPhoneNumber', "Please, provide your phone").not().isEmpty(),
+        // check('email', "Please, provide a valid email").isEmail(), No permito cambiar email
+        formValidator
+    ],
+    updateCustomerInfoById);
 
 customerRouter.post('/update-password/:id',
     [

@@ -6,7 +6,7 @@ import { ResultSetHeader } from 'mysql2';
 
 
 export const getCustomerFullInfoById = async (req: Request, res: Response) => {
-
+    
     const { id } = req.params;
 
     try {
@@ -15,6 +15,8 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 
         const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE id = ${id};`);
 
+        console.log(result);
+        
         if (result != null) {
 
             const customer: Customer = result[0][0];
@@ -22,7 +24,7 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
             if (customer != null) {
 
                 const { name, surname, phone, email, country, city, address, postal_code, activeNotifications } = customer;
-
+                
                 res.status(200).json({
 
                     ok: true,
@@ -58,10 +60,13 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 }
 
 export const updateCustomerInfoById = async (req: Request, res: Response) => {
-
+    
     const { id } = req.params;
-    const { name, surname, phone, country, city, address, postalCode, activeNotifications } = req.body;
+    const { name, surname, fullPhoneNumber, country, city, address, postalCode, activeNotifications } = req.body;
 
+    
+    console.log(req.body);
+    
     try {
 
         const connection = await dbConnection();
@@ -69,7 +74,7 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
         const updatedAt = new Date(Date.now() + 1 * (60 * 60 * 1000)).toISOString().slice(0, 19).replace('T', ' ');
 
         const result = await connection?.query<ResultSetHeader>(`UPDATE Customers
-                                                                 SET name="${name}", surname="${surname}", phone="${phone}",
+                                                                 SET name="${name}", surname="${surname}", phone="${fullPhoneNumber}",
                                                                      country="${country}", city="${city}", 
                                                                      address="${address}", postal_code="${postalCode}",
                                                                      activeNotifications=${activeNotifications},

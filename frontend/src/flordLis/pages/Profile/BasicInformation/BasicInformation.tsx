@@ -18,6 +18,7 @@ import {
 import './basicInformationStyle.css';
 import { MessageBoxState, onResetMessageBoxSlice } from '../../../../redux/slices/messageBoxSlice';
 import { resetMessageBoxThunk } from '../../../../redux/thunks/messageBoxThunks';
+import { validatePhoneNumber } from '../../../helpers/validatePhoneNumber';
 
 
 export const BasicInformation = ({ customerFullInfo }: any) => {
@@ -84,23 +85,40 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
         let saved: boolean = false;
         // Finalmente procedemos
         if (updateCustomer) {
+            
+            // Check the number is colombian
+            const canSave = validatePhoneNumber(phone);
 
-            try {
+            if (canSave) {
 
-                const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, phone, country, city, postalCode, address, activeNotifications });
+                // Check Phone country and phone
+                // De momento como solo permito Colombia, no hago el checkeo de país + número porque siempre será Colombia
+                const fullPhoneNumber: string = countryPhone + phone;
 
-                if (data.ok) {
+                try {
 
-                    // Si ha ido todo bien lo marcamos en Redux para sacar el message box
-                    dispatch(operationSuccessCustomerThunk());
-                    saved = true;
+                    const { data } = await flordLisApi.put(`customer/${userId}`, { name, surname, fullPhoneNumber, country, city, postalCode, address, activeNotifications });
+
+                    if (data.ok) {
+
+                        // Si ha ido todo bien lo marcamos en Redux para sacar el message box
+                        dispatch(operationSuccessCustomerThunk());
+                        saved = true;
+                    }
+                } catch (error: any) {
+
+                    console.log(error);
+                    
+                    if (error.response.data.error.code === 'ER_DUP_ENTRY') {
+
+                        dispatch(onUpdatePhoneError());
+                    }
                 }
-            } catch (error: any) {
-
-                if (error.response.data.error.code === 'ER_DUP_ENTRY') {
-
-                    dispatch(onUpdatePhoneError());
-                }
+            }
+            else {
+                
+                // TODO: mostrar que el número es inválido
+                console.log('número inválido');
             }
         }
 
@@ -156,7 +174,7 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                         </li>
                         <li className='form__element'>
                             <div className='element__left'>Correo electrónico</div>
-                            <input className="element__right" type="text" placeholder="Correo electrónico" name="email" value={email || ''} onChange={onInputChange} />
+                            <input className="element__right" type="text" placeholder="Correo electrónico" readOnly name="email" value={email || ''} />
                         </li>
                         <li className='form__element'>
                             <div className='element__left'>País</div>
@@ -183,10 +201,10 @@ export const BasicInformation = ({ customerFullInfo }: any) => {
                         </li>
                     </ul>
                 </form>
-                <button className='element__left' onClick={AskToUpdateCustomer}>Guardar información</button>
+                <button className='element__left save-information-button' type='submit' onClick={AskToUpdateCustomer}>Guardar información</button>
                 {
                     (askingToUpdateCustomer)
-                        ? <MessageBox title="Actualizar información" description="¿Deseas guardar la información actual de tu perfil?" closeButton={false} />
+                        ? <MessageBox title="Flor d' Lis" description="¿Deseas guardar la información actual de tu perfil?" closeButton={false} />
                         : null
                 }
                 {

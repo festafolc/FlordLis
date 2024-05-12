@@ -69,7 +69,7 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                 }
             }
             else {
-
+                
                 return res.status(400).json({
                     ok: false,
                     msg: 'Try with another email'
