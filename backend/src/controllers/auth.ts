@@ -8,57 +8,84 @@ import { Admin, Customer } from '../../types';
 export const createCustomer = async (req: Request, res: Response): Promise<Response> => {
 
     const { name, surname, fullPhoneNumber, email, password, activeNotifications } = req.body;
-    
-    try {
 
+    try {
+        
+        let result;
         const connection = await dbConnection();
 
-        let result;
         // Check if the email already exist
         if (email === 'carlos@carlos.com') {
 
-            result = await connection?.query<Customer[]>(`SELECT * FROM Admin_Users WHERE email = "${email}";`);
+            result = await connection?.query<any>(`SELECT email FROM Admin_Users WHERE email = "${email}";`);
         }
         else {
 
-            result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE email = "${email}";`);
+            result = await connection?.query<any>(`SELECT email FROM Customers WHERE email = "${email}";`);
         }
-
-        // TODO: Check if the phone already exists
 
         if (result != null) {
 
-            // I should check the customer in the previous if
-            const customer: Customer = result[0][0];
-            if (customer == null) {
+            const emailExists = result[0][0];
+            
+            // Si no he encontrado cliente con el email continuo
+            if (emailExists == null) {
 
-                const salt = bcrypt.genSaltSync(15);
-                const encrypted = bcrypt.hashSync(password, salt);
+                // Comprobamos si el teléfono ya existe
+                result = await connection?.query<any>(`SELECT phone FROM Customers WHERE phone = "${fullPhoneNumber}";`);
 
-                let newCustomer;
-                if (email === 'carlos@carlos.com') {
+                if (result != null) {
 
-                    newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Admin_Users (admin_type, phone, email, password, isDeleted)
-                                                                            VALUES (${2}, "${fullPhoneNumber}", "${email}", "${encrypted}", ${false});`);
-                }
-                else {
+                    const phoneExists = result[0][0];
 
-                    newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
-                                                                                  VALUES ("${name}", "${surname}", "${fullPhoneNumber}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
-                }
+                    // Si no lo he encontrado por teléfono sigo
+                    if (phoneExists == null) {
 
-                if (newCustomer != null) {
+                        // Encriptamos la password
+                        const salt = bcrypt.genSaltSync(15);
+                        const encrypted = bcrypt.hashSync(password, salt);
 
-                    const id = newCustomer[0].insertId;
+                        // Creamos el usuario
+                        let newCustomer;
+                        if (email === 'carlos@carlos.com') {
 
-                    const token = await createJWT(id.toString());
+                            newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Admin_Users (admin_type, phone, email, password, isDeleted)
+                                                                                    VALUES (${2}, "${fullPhoneNumber}", "${email}", "${encrypted}", ${false});`);
+                        }
+                        else {
 
-                    return res.status(201).json({
-                        ok: true,
-                        msg: 'register',
-                        id,
-                        token
-                    });
+                            newCustomer = await connection?.query<ResultSetHeader>(`INSERT INTO Customers (name, surname, phone, email, password, activeNotifications, isDeleted)
+                                                                                    VALUES ("${name}", "${surname}", "${fullPhoneNumber}", "${email}", "${encrypted}", ${activeNotifications}, ${false});`);
+                        }
+
+                        if (newCustomer != null) {
+
+                            // Añadimos token válido al id del usuario
+                            const id = newCustomer[0].insertId;
+                            const token = await createJWT(id.toString());
+
+                            return res.status(201).json({
+                                ok: true,
+                                msg: 'register',
+                                id,
+                                token
+                            });
+                        }
+                        else {
+
+                            return res.status(500).json({
+                                ok: false,
+                                msg: 'An expected error occurred while inserting a new user.'
+                            });
+                        }
+                    }
+                    else {
+
+                        return res.status(400).json({
+                            ok: false,
+                            msg: 'Phone already exists'
+                        });
+                    }
                 }
                 else {
 
@@ -69,7 +96,7 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
                 }
             }
             else {
-                
+
                 return res.status(400).json({
                     ok: false,
                     msg: 'Try with another email'
@@ -86,7 +113,7 @@ export const createCustomer = async (req: Request, res: Response): Promise<Respo
     }
     catch (error) {
         console.log(error);
-        
+
         return res.status(500).json({
             ok: false,
             msg: 'An expected error occurred.',

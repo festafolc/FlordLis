@@ -15,8 +15,6 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 
         const result = await connection?.query<Customer[]>(`SELECT * FROM Customers WHERE id = ${id};`);
 
-        console.log(result);
-        
         if (result != null) {
 
             const customer: Customer = result[0][0];
