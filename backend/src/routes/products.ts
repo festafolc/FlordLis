@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getAllProducts } from '../controllers/product';
+import { getAllProducts, getAllProductsByCategoryId, getProductById } from '../controllers/product';
 
 /*
     Products routes
@@ -9,5 +9,9 @@ import { getAllProducts } from '../controllers/product';
 const productRouter = Router();
 
 productRouter.get('/', getAllProducts);
+
+productRouter.get('/:categoryId', getAllProductsByCategoryId);
+
+productRouter.get('/product/:id', getProductById);
 
 export default productRouter;

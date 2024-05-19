@@ -19,8 +19,8 @@ app.use(express.json());
 // Routes
 app.use('/flordlis/', authRouter);
 app.use('/flordlis/customer', customerRouter);
-app.use('/flordlis/shop/categories', categoryRouter);
 app.use('/flordlis/shop', productRouter);
+app.use('/flordlis/shop/categories', categoryRouter);
 
 
 // Listen

@@ -23,7 +23,7 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
 
                 const { name, surname, phone, email, country, city, address, postal_code, activeNotifications } = customer;
                 
-                res.status(200).json({
+                return res.status(200).json({
 
                     ok: true,
                     msg: 'Get Customer by Id',
@@ -38,10 +38,18 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
                     activeNotifications
                 });
             }
+            else {
+
+                return res.status(400).json({
+
+                    ok: false,
+                    msg: 'Could not retrieve user information.',
+                });
+            }
         }
         else {
 
-            res.status(400).json({
+            return res.status(400).json({
 
                 ok: false,
                 msg: 'Could not retrieve user information.',
@@ -49,7 +57,7 @@ export const getCustomerFullInfoById = async (req: Request, res: Response) => {
         }
     } catch (error) {
 
-        res.status(500).json({
+        return res.status(500).json({
 
             ok: false,
             msg: 'An expected error occurred.',
@@ -83,7 +91,7 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
 
             if (result[0].affectedRows > 0) {
 
-                res.status(200).json({
+                return res.status(200).json({
 
                     ok: true,
                     msg: 'Customer information has been updated.',
@@ -92,7 +100,7 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
             }
             else {
 
-                res.status(400).json({
+                return res.status(400).json({
 
                     ok: false,
                     msg: 'Customer information has not been updated.',
@@ -100,10 +108,19 @@ export const updateCustomerInfoById = async (req: Request, res: Response) => {
                 });
             }
         }
+        else {
+
+            return res.status(400).json({
+
+                ok: false,
+                msg: 'Customer information has not been updated.',
+                updatedAt
+            });
+        }
 
     } catch (error) {
 
-        res.status(500).json({
+        return res.status(500).json({
 
             ok: false,
             msg: 'An expected error occurred.',
@@ -132,17 +149,25 @@ export const updatePasswordByUser = async (req: Request, res: Response) => {
 
         if (result != null) {
 
-            res.status(200).json({
+            return res.status(200).json({
 
                 ok: true,
                 msg: 'The password has been updated.',
                 updatedAt
             });
         }
+        else {
+                return res.status(400).json({
+
+                    ok: false,
+                    msg: 'Customer password has not been updated.',
+                    updatedAt
+                });
+        }
 
     } catch (error) {
 
-        res.status(500).json({
+        return res.status(500).json({
 
             ok: false,
             msg: 'An expected error occurred.'

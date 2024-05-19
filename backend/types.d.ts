@@ -22,16 +22,16 @@ export interface Customer extends RowDataPacket {
 
 export interface Product extends RowDataPacket {
 
-    id: number;
-    categoryName: ECategories;
-    name: string;
-    description: string;
-    image: string;
-    price: string;
-    numberReviews: number;
-    stock: number;
-    createdAt: string;
-    updatedAt?: string;
+    id: number
+    category_id: number
+    name: string
+    description: string
+    color: string
+    price: string
+    stock: number
+    numberReviews: number
+    createdAt: string
+    updatedAt: any
 }
 
 export interface Admin extends RowDataPacket {
