@@ -2,11 +2,9 @@
 // import { Rating } from './Rating';
 import { Link } from 'react-router-dom';
 import ecoFlordLis from '../../../assets/images/ecoflordlis.jpg';
+import { Product } from '../../../../../backend/types';
 
-export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { product: any, showbodyCard: boolean, showAddCartButton: boolean }) => {
-
-    // const productImageUrl = `../../../assets/products/${product.id}.jpg`;
-    console.log(product, showbodyCard, showAddCartButton);
+export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { product: Product, showbodyCard: boolean, showAddCartButton: boolean }) => {
 
     return (
         <>
@@ -15,8 +13,8 @@ export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { prod
                     <img className="product__image-img" src={ecoFlordLis} alt="Eco Flor d Lis" />
                 </div>
                 <div className="APP-product__info">
-                    <h3 className="APP-product__name">Nombre del producto!!</h3>
-                    <h4 className="APP-prodcut__price">400.00</h4>
+                    <h3 className="APP-product__name">{product.name}</h3>
+                    <h4 className="APP-prodcut__price">{product.price}</h4>
                 </div>
             </Link>
         </>

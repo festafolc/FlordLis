@@ -2,11 +2,65 @@ import ecoFlordLis from '../../../assets/images/ecoflordlis.jpg';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { OrderProductsBy } from '../../components/OrderProductsBy';
 import './shopPagesStyle.css';
+import flordLisApi from '../../../apis/flordLisApi';
+import { useEffect, useState } from 'react';
+import { Product } from '../../../../../backend/types';
 
 
 export const EcoFlordLisPage = () => {
-  return (
+
+  // CATEGORIAS DE ECOFLOR DE LIS POR ID
+  // 1 HOGAR
+  // 2 CUIDADO PERSONAL
+  // 3 JABONES
+
+  let allEcoFlordLisProducts: { [id: string]: Product } = {};
+
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [ecoFlordLisProducts, setEcoFlordLisProducts] = useState<{ [id: string]: Product }>({})
+
+  useEffect(() => {
+
+    allEcoFlordLisProducts = {};
+    setEcoFlordLisProducts({});
+    setIsLoaded(false);
+
+    getEcoFlordLisProductsById("1");
+    getEcoFlordLisProductsById("2");
+    getEcoFlordLisProductsById("3");
+  }, [])
+
+  const getEcoFlordLisProductsById = async (categoryId: string) => {
+
+    try {
+
+      const { data } = await flordLisApi.get('/shop/' + categoryId);
+
+      if (data.ok) {
+
+        (data.productsByCategoryId as Array<Product>).forEach((product) => {
+
+          if (!Object.keys(allEcoFlordLisProducts).includes(product.id.toString())) {
+
+            allEcoFlordLisProducts[product.id.toString()] = product;
+          }
+        });
+
+        if (Object.keys(allEcoFlordLisProducts).length > 0) {
+          setEcoFlordLisProducts(allEcoFlordLisProducts);
+          setIsLoaded(true);
+        }
+      }
+    } catch (error) {
+
+      // TODO
+      setIsLoaded(false);
+    }
+  }
+
+  return !isLoaded ? null : (
     <>
+
       <section className='shop__container'>
         <div className='shop__header__container'>
           <div className='shop__header__content'>
@@ -21,33 +75,15 @@ export const EcoFlordLisPage = () => {
           <OrderProductsBy />
 
           <div className='APP-products__container'>
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
-            <ProductCard product={null} showbodyCard={false} showAddCartButton={false} />
+            {
+              (ecoFlordLisProducts)
+                ?
+                Object.values(ecoFlordLisProducts).map((product: Product, index) => (
+                  <ProductCard key={index} product={product} showbodyCard={false} showAddCartButton={false} />
+                ))
+                :
+                null
+            }
           </div>
         </main>
       </section>

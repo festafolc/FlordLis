@@ -94,26 +94,6 @@ export const ProfileInformationPage = () => {
           :
           null
       }
-
-      {/* <Container className="mt-5">
-<BasicInformation customerFullInfo={customerFullInfo} />
-        <Row>
-          <Col xs={2} id="sidebar-wrapper">
-            <SidebarProfile />
-          </Col>
-          <Col xs={10} id="page-content-wrapper">
-            <br />
-            {
-              (customerFullInfo)
-                ?
-                <BasicInformation customerFullInfo={customerFullInfo} />
-                :
-                null
-            }
-          </Col>
-        </Row>
-
-      </Container> */}
     </>
   )
 }
