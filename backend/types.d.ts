@@ -26,6 +26,7 @@ export interface Product extends RowDataPacket {
     category_id: number
     name: string
     description: string
+    linkName: string
     color: string
     price: string
     stock: number

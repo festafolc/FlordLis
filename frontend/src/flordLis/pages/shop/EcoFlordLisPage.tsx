@@ -46,7 +46,10 @@ export const EcoFlordLisPage = () => {
           }
         });
 
-        if (Object.keys(allEcoFlordLisProducts).length > 0) {
+        // FIXME: buscar forma de mostrar todo dinámicamente
+        if (Object.keys(allEcoFlordLisProducts).length == 41) {
+          console.log(Object.keys(allEcoFlordLisProducts).length);
+          
           setEcoFlordLisProducts(allEcoFlordLisProducts);
           setIsLoaded(true);
         }

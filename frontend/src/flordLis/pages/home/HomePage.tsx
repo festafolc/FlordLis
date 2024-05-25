@@ -85,39 +85,11 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* REQUEST */}
+        {/* PEEDIDO PERSONAL */}
         <RequestPersonalProduct />
 
         <Footer />
       </main>
-      {/* <Container>
-
-        <h1>Productos mejor valorados</h1>
-        <Row>
-          <Col className='bg-primary'>
-            <ProductsCarousel />
-          </Col>
-        </Row>
-
-        <h1>Productos nuevos</h1>
-        <Row>
-          {comicsList.map((product: any) => (
-            <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
-              <ProductCard product={product} showbodyCard={true} showAddCartButton={false} />
-            </Col>
-          ))}
-        </Row>
-
-        <h1>Flor d' Lis categorías</h1>
-        <Row>
-          {flordLisCategories.map((category: any) => (
-            <Col key={category.id} sm={12} md={6} lg={4} xl={3}>
-              <h3 className='text-center' >{category.name[0].toUpperCase() + category.name.slice(1).replace('-', ' ')}</h3>
-              <CategoriesCard category={category} bigCard={true}/>
-            </Col>
-          ))}
-        </Row>
-      </Container> */}
     </>
   )
 }
