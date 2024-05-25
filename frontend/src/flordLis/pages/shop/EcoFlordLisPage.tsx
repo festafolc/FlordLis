@@ -77,7 +77,7 @@ export const EcoFlordLisPage = () => {
           {/* Ordernar por */}
           <OrderProductsBy />
 
-          <div className='APP-products__container'>
+          <div className='shop__cards'>
             {
               (ecoFlordLisProducts)
                 ?
