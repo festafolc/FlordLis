@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getAllProducts, getAllProductsByCategoryId, getProductById } from '../controllers/product';
+import { getAllProducts, getAllProductsByCategoryId, getAllProductsByMultipleCategoryId, getProductById } from '../controllers/product';
 
 /*
     Products routes
@@ -10,7 +10,9 @@ const productRouter = Router();
 
 productRouter.get('/', getAllProducts);
 
-productRouter.get('/:categoryId', getAllProductsByCategoryId);
+productRouter.get('/category/:categoryId', getAllProductsByCategoryId);
+
+productRouter.get('/categories/:categoryIds', getAllProductsByMultipleCategoryId);
 
 productRouter.get('/product/:id', getProductById);
 

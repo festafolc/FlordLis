@@ -14,10 +14,10 @@ export const EcoFlordLisPage = () => {
   // 2 CUIDADO PERSONAL
   // 3 JABONES
 
-  let allEcoFlordLisProducts: { [id: string]: Product } = {};
+  let allEcoFlordLisProducts: { [name: string]: Product } = {};
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [ecoFlordLisProducts, setEcoFlordLisProducts] = useState<{ [id: string]: Product }>({})
+  const [ecoFlordLisProducts, setEcoFlordLisProducts] = useState<{ [name: string]: Product }>({})
 
   useEffect(() => {
 
@@ -25,38 +25,35 @@ export const EcoFlordLisPage = () => {
     setEcoFlordLisProducts({});
     setIsLoaded(false);
 
-    getEcoFlordLisProductsById("1");
-    getEcoFlordLisProductsById("2");
-    getEcoFlordLisProductsById("3");
-  }, [])
+    getAllProductsByMultipleCategoryIds("1,2,3");
+  }, []);
 
-  const getEcoFlordLisProductsById = async (categoryId: string) => {
+  const getAllProductsByMultipleCategoryIds = async (categoriesIds: string) => {
 
     try {
-
-      const { data } = await flordLisApi.get('/shop/' + categoryId);
-
+      
+      const { data } = await flordLisApi.get('/shop/categories/' + categoriesIds);
+      console.log(data);
+      
       if (data.ok) {
 
-        (data.productsByCategoryId as Array<Product>).forEach((product) => {
+        (data.productsByMultipleCategoryIds as Array<Product>).forEach((product) => {
 
-          if (!Object.keys(allEcoFlordLisProducts).includes(product.id.toString())) {
+          if (!Object.keys(allEcoFlordLisProducts).includes(product.name)) {
 
-            allEcoFlordLisProducts[product.id.toString()] = product;
+            allEcoFlordLisProducts[product.name] = product;
           }
         });
 
-        // FIXME: buscar forma de mostrar todo dinámicamente
-        if (Object.keys(allEcoFlordLisProducts).length == 41) {
-          console.log(Object.keys(allEcoFlordLisProducts).length);
-          
+        if (Object.keys(allEcoFlordLisProducts).length > 0) {
+
           setEcoFlordLisProducts(allEcoFlordLisProducts);
           setIsLoaded(true);
         }
       }
     } catch (error) {
 
-      // TODO
+      // TODO: HACER UN GUI SIN PRODUCTOS
       setIsLoaded(false);
     }
   }
