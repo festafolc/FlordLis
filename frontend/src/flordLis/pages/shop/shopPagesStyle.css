@@ -41,13 +41,6 @@
     height: 100%;
 }
 
-/* SHOP CARDS */
-.APP-shopCards__container {
-    margin-left: 18rem;
-    margin-right: 18rem;
-    margin-bottom: 10rem;
-}
-
 /*  PRODUCTS*/
 .APP-shop__products {
     position: relative;
@@ -124,77 +117,140 @@
 /* Product Card */
 .shop__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
     gap: 4rem;
-    /* margin: 0rem 5vw; */
-    padding: 0;
     list-style-type: none;
 }
 
-.card__product {
+.card__product  {
+    width: 35rem;
+    height: 50rem;
+    background: white;
+    margin: auto;
     position: relative;
-    display: block;
-    height: 40rem;
-    border-radius: 1rem 1rem 0 0;
     overflow: hidden;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    text-decoration: none;
+    border-radius: 1rem 1rem 1rem 1rem;
+    box-shadow: 0;
+    transform: scale(0.95);
+    transition: all 600ms ease-in-out;
 }
 
-.card__product__image {
+.card__product:hover {
+    transform: scale(1);
+    box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product__information {
     width: 100%;
     height: 100%;
 }
 
-.card__product__overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: -1;
-    border-radius: 3rem 0 0 0;
-    background: rgb(119, 101, 23);
-    background: linear-gradient(to bottom right, rgba(255,255,255,1) 0%, rgba(237,220,202,1) 100%);
-    transform: translateY(100%);
+.product__top {
+    height: 80%;
+    width: 100%;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+}
+
+.product__bottom {
+    width: 200%;
+    height: 20%;
     transition: all 600ms ease-in-out;
 }
 
-.card__product__header {
+.bottom__details {
+    height: 100%;
+    width: 50%;
+    background: #f4f4f4;
     position: relative;
+    float: left;
+}
+
+.details__nameAndprice {
+    padding: 1rem;
+    float: left;
+    width: 80%;
+}
+
+.details__name {
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+
+.details__cart {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 2em;
-    padding: 1em;
-    border-radius: 3rem 0 0 0;
+    float: right;
+    height: 100%;
+    width: 20%;
+    background: #f1f1f1;
+    transition: all 600ms ease-in-out;
+    border-left: solid thin rgba(0, 0, 0, 0.1);
 }
 
-.card__product:hover .card__product__overlay {
-    transform: translateY(0);
-    z-index: 1;
+.details__cart:hover {
+    background: #92879B;
 }
 
-.card__product__cart {
-    flex-shrink: 0;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    transition: all 300ms ease-in-out;
-}
-
-.card__product__cart:hover {
-    width: 5.5rem;
-    height: 5.5rem;
-}
-
-
-.card__product__title {
+.details__cart-icon {
     font-size: 2rem;
-    margin: 0 0 .3rem;
-    color: #6A515E;
+    transition: all 600ms ease-in-out;
 }
 
-.card__product__price {
-    font-size: 1.5rem;
-    color: #575154;
+
+.details__cart:hover > .details__cart-icon {
+    font-size: 2.2rem;
+    color: #f1f1f1;
+}
+
+
+.product__description {
+    z-index: 9;
+    background: #92879B;
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    top: -70px;
+    right: -70px;
+    border-radius: 0px 0px 200px 200px;
+    transition: all 0.5s, border-radius 2s, top 1s;
+    overflow: hidden;
+}
+
+.description__icon {
+    position: absolute;
+    right: 88px;
+    top: 85px;
+    color: white;
+    opacity: 1;
+}
+
+.description__container {
+    padding: 5%;
+    opacity: 0;
+    transform: scale(0.5);
+    transform: translateY(-200%);
+    transition: opacity 0.2s, transform 0.8s;
+}
+
+.product__description:hover {
+    width: 100%;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    height: 80%;
+    overflow-y:auto;
+}
+
+.product__description:hover > .description__icon{
+    opacity: 0;
+}
+
+.product__description:hover > .description__container {
+    opacity: 1;
+    transform: scale(1);
+    transform: translateY(0);
 }

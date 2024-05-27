@@ -2,7 +2,6 @@
 import { Link } from 'react-router-dom';
 import { Product } from '../../../../../backend/types';
 import { getImageURL } from '../../helpers/getImageURL';
-import cart from '../../../assets/images/cart.jpg';
 
 
 export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { product: Product, showbodyCard: boolean, showAddCartButton: boolean }) => {
@@ -10,19 +9,29 @@ export const ProductCard = ({ product, showbodyCard, showAddCartButton }: { prod
     const formatter = new Intl.NumberFormat('es-CO', {
         style: 'currency',
         currency: 'COP',
-      });
+    });
 
     return (
         <>
             <Link className="card__product" to={`/shop/${product.linkName}`}>
-                <img className="card__product__image" src={getImageURL("ecoflordlis", `${product.linkName}`, `${product.linkName}_01`)} alt={product.name} />
-                <div className="card__product__overlay">
-                    <div className="card__product__header">
-                        <div className="card__product__header-text">
-                            <h2 className="card__product__title">{product.name}</h2>
-                            <h3 className="card__product__price">{formatter.format(product.price)} COP</h3>
+                <div className="product__information">
+                    <img className="product__top" src={getImageURL("ecoflordlis", `${product.linkName}`, `${product.linkName}_01`)} alt={product.name} />
+                    <div className="product__bottom">
+                        <div className="bottom__details">
+                            <div className="details__nameAndprice">
+                                <h1 className='details__name'>{product.name}</h1>
+                                <p>{formatter.format(product.price)} COP</p>
+                            </div>
+                            <div className='details__cart'><i className='fa-solid fa-basket-shopping details__cart-icon'></i></div>
                         </div>
-                        <img className="card__product__cart" title='Añadir a carrito' src={cart} alt="Carrito" />
+                    </div>
+                </div>
+                <div className="product__description">
+                    <div className="description__icon"><i className="fa fa-info-circle"></i></div>
+                    <div className="description__container">
+                        <p>
+                            {product.description}
+                        </p>
                     </div>
                 </div>
             </Link>
