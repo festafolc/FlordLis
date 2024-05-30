@@ -1,36 +1,37 @@
 .CU-container__units {
-    /* width: 50%; */
-    margin-top: 1rems;
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 2rem;
+    justify-content: center;
     align-items: center;
 }
 
 .CU-units__number {
-    font-size: 2rem;
-    color:  rgb(25, 167, 84);
+    font-size: 1.8rem;
+    color: #515151;
+    font-weight: 500;
+    margin-right: 2.5rem;
 }
 
 .CU-units__counter {
     display: flex;
     flex-direction: row;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .CU-counter__button {
     font-size: 2rem;
     padding: 0.5rem 1rem;
     background-color: transparent;
-    color:  rgb(25, 167, 84);
-    border: 1px solid rgb(25, 167, 84);
+    color: #515151;
+    border: 1px solid #d9d9d9;
     cursor: pointer;
     transition: all 300ms ease-out;
 }
 
 .CU-counter__button:hover {
-    background-color: rgb(25, 167, 84);
-    color: rgb(255, 255, 255);
+    background-color: darken(white, 2%);
+    border: 1px solid #aedaa6;
+    color: #aedaa6;
+    cursor: pointer;
 }

@@ -51,90 +51,26 @@ export const ProductPage = () => {
         // (product)
         (true)
           ?
-          <section className="PP-container__product">
-            <div className="PP-product__top">
-              <div className="PP-top__carousel">
-                <img className="PP-top__image" src={captain} alt="Imagen producto" />
+          <section className="productBuy__container">
+            <div className="productBuy__nav">
+              <span className="productBuy__nav__back"><i className='fa-solid fa-chevron-left'> Volver</i></span>
+            </div>
+            <div className="productBuy__information">
+              <div className="productBuy__left">
+                <img src="https://s-media-cache-ak0.pinimg.com/236x/3b/36/ca/3b36ca3afe0fa0fd4984b9eee2e154bb.jpg" />
               </div>
-              <div className="PP-top__information">
-                <h2 className="PP-information__title">Título del producto en venta</h2>
-                {/* <h3 className="PP-information__availability">Disponible</h3> */}
-                <h3 className="PP-top__description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa est earum veniam qui corrupti animi facere omnis sit dolorem quisquam commodi, tempore, aliquam eius harum? Sapiente vitae ad voluptate recusandae.
-                </h3>
-                <div className="PP-information__quantity">
-                  <h3 className="PP-information__quantity-title">Unidades:</h3>
+              <div className="productBuy__right">
+                <h2 className="productBuy__title">Classic Peace Lily</h2>
+                <h4 className="productBuy__category">Popular House Plant</h4>
+                <h1 className="productBuy__price">$18</h1>
+                <p className="productBuy__description">Classic Peace Lily is a spathiphyllum floor plant arranged in a bamboo planter with a blue & red ribbom and butterfly pick.</p>
+                <div className="productBuy__AddToCartAndUnits">
+                  <button className="productBuy__AddToCart">Añadir a la cesta</button>
                   <CounterUnits />
                 </div>
-                <div className="PP-information__price">
-                  <h3 className="PP-information__price-title">Precio:</h3>
-                  <h3 className="PP-information__price-value">$300 COP</h3>
-                </div>
-                <button className="PP-information__AddToCart">Añadir a la cesta</button>
               </div>
-            </div>
-            <hr className="PP-line__separator" />
-            <div className="PP-moreProducts__container">
-              <h2 className="PP-moreProducts__title">Productos similares</h2>
-              <div className="PP-moreProducts__list">
-                <ProductCardHome />
-                <ProductCardHome />
-                <ProductCardHome />
-                <ProductCardHome />
-                <ProductCardHome />
-              </div>
-            </div>
-            <hr className="PP-line__separator" />
-            <div className="PP-shopCards__container">
-              <ShopCards />
-            </div>
-            <div className="PP-requestPersonalProduct__container">
-              <RequestPersonalProduct />
             </div>
           </section>
-          // <Container>
-          //   {/* <Link className="btn btn-light my-3" to={'..'}>Volver</Link> */}
-          //   <Button className="btn btn-light my-3" type="button" onClick={goBack}>Volver</Button>
-          //   <Row>
-          //     <Col md={5}>
-          //       <Image src={productImageUrl} alt={product.superhero} fluid />
-          //     </Col>
-          //     <Col md={4}>
-          //       <ListGroup variant="flush">
-          //         <ListGroup.Item>
-          //           <h3>{product.superhero}</h3>
-          //         </ListGroup.Item>
-          //         <ListGroup.Item>
-          //           <Rating value={product.rating} text={`${product.numReviews} valoraciones`} />
-          //         </ListGroup.Item>
-          //         <ListGroup.Item>Descripción: {product.alter_ego}</ListGroup.Item>
-          //       </ListGroup>
-          //     </Col>
-          //     <Col md={3}>
-          //       <Card>
-          //         <ListGroup variant="flush">
-          //           <ListGroup.Item>
-          //             <Row>
-          //               <Col>Precio:</Col>
-          //               <Col><strong>{product.price} $COP</strong></Col>
-          //             </Row>
-          //           </ListGroup.Item>
-          //           <ListGroup.Item>
-          //             <Row>
-          //               <Col>Disponiblidad:</Col>
-          //               <Col><strong>{product.countInStock > '0' ? "Disponible" : "No disponible"}</strong></Col>
-          //             </Row>
-          //           </ListGroup.Item>
-          //           <ListGroup.Item>
-          //             <Button className="btn-block" type="button" disabled={product.countInStock < '1'} onClick={addToCart}>
-          //               Añadir a carrito
-          //             </Button>
-          //           </ListGroup.Item>
-          //         </ListGroup>
-          //       </Card>
-          //     </Col>
-          //   </Row>
-          // </Container>
           :
           null
       }
