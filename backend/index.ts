@@ -22,7 +22,6 @@ app.use('/flordlis/customer', customerRouter);
 app.use('/flordlis/shop', productRouter);
 app.use('/flordlis/shop/categories', categoryRouter);
 
-
 // Listen
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);

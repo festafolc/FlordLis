@@ -33,7 +33,6 @@ export const EcoFlordLisPage = () => {
     try {
       
       const { data } = await flordLisApi.get('/shop/categories/' + categoriesIds);
-      console.log(data);
       
       if (data.ok) {
 

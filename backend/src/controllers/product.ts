@@ -33,6 +33,7 @@ export const getAllProducts = async (_req: Request, res: Response) => {
 
             ok: false,
             msg: 'An expected error occurred.',
+            error
         });
     }
 }
@@ -81,6 +82,7 @@ export const getAllProductsByCategoryId = async (req: Request, res: Response) =>
 
             ok: false,
             msg: 'An expected error occurred.',
+            error
         });
     }
 }
@@ -129,6 +131,7 @@ export const getAllProductsByMultipleCategoryId = async (req: Request, res: Resp
 
             ok: false,
             msg: 'An expected error occurred.',
+            error
         });
     }
 }
@@ -177,8 +180,56 @@ export const getProductById = async (req: Request, res: Response) => {
 
             ok: false,
             msg: 'An expected error occurred.',
+            error
         });
     }
 }
 
-// TODO getProductByName
+export const getAllProductByLinkName = async (req: Request, res: Response) => {
+
+    const { linkName } = req.params
+
+    try {
+        
+        const connection = await dbConnection()
+
+        const result = await connection?.query<Product[]>(`SELECT * FROM Products WHERE linkName = "${linkName}";`)
+
+        if (result != null) {
+
+            const productsByLinkName: Product[] = result[0];
+            
+            if (productsByLinkName != null) {
+                
+                return res.status(200).json({
+                    ok: true,
+                    msg: 'getAllProductByLinkName',
+                    productsByLinkName
+                })
+            }
+            else {
+
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Could not get products by link name.',
+                });
+            }
+        }
+        else {
+
+            return res.status(400).json({
+                ok: false,
+                msg: 'Could not get products by link name.',
+            });
+        }
+
+    } catch (error) {
+        
+        return res.status(500).json({
+
+            ok: false,
+            msg: 'An expected error occurred.',
+            error
+        });
+    }
+}

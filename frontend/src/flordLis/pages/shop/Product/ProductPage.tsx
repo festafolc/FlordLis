@@ -14,16 +14,18 @@ import { ProductCardHome } from "../../../components/ProductCardHome/ProductCard
 
 export const ProductPage = () => {
 
-  // const { id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // const dispatch = useFlordLisDispatch();
+  const dispatch = useFlordLisDispatch();
+console.log(id);
 
   // Se supone que esto permite no renderizar otra vez si se vuelve a recargar la página con el mismo id
   // const product = useMemo(() => getProductById(id), [id]);
   // const productImageUrl = `../../../assets/products/${id}.jpg`;
 
   const goBack = () => {
+
     navigate(-1);
   }
 
@@ -74,7 +76,6 @@ export const ProductPage = () => {
           :
           null
       }
-
     </>
   )
 }
