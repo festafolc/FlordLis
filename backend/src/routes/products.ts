@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getAllProductByLinkName, getAllProducts, getAllProductsByCategoryId, getAllProductsByMultipleCategoryId, getProductById } from '../controllers/product';
+import { getAllProductsByLinkName, getAllProducts, getAllProductsByCategoryId, getAllProductsByMultipleCategoryId, getProductById } from '../controllers/product';
 
 /*
     Products routes
@@ -16,6 +16,6 @@ productRouter.get('/categories/:categoryIds', getAllProductsByMultipleCategoryId
 
 productRouter.get('/product/:id', getProductById);
 
-productRouter.get('/allProductsByLinkName/:linkName', getAllProductByLinkName);
+productRouter.get('/allProductsByLinkName/:linkName', getAllProductsByLinkName);
 
 export default productRouter;

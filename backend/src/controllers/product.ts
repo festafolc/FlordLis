@@ -185,7 +185,7 @@ export const getProductById = async (req: Request, res: Response) => {
     }
 }
 
-export const getAllProductByLinkName = async (req: Request, res: Response) => {
+export const getAllProductsByLinkName = async (req: Request, res: Response) => {
 
     const { linkName } = req.params
 

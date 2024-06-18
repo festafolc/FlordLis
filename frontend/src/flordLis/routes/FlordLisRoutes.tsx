@@ -33,7 +33,7 @@ export const FlordLisRoutes = () => {
         <Route path="/shop/ecoflordlis" element={<EcoFlordLisPage />} />
         <Route path="/shop/flordlishome" element={<FlordlisHomePage />} />
         <Route path="/shop/categories/:name" element={<CategoryPage />} />
-        <Route path="/shop/:id" element={<ProductPage />} />
+        <Route path="/shop/:linkName" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/request-personal-design" element={<PersonalProduct />} />
 
