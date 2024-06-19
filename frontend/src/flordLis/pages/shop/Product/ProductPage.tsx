@@ -28,8 +28,6 @@ export const ProductPage = () => {
     currency: 'COP',
   });
 
-  // const productImageUrl = `../../../assets/products/${id}.jpg`;
-
   useEffect(() => {
 
     setIsLoaded(false);
@@ -39,7 +37,6 @@ export const ProductPage = () => {
     }
   }, []);
 
-
   const getAllProductsByLinkName = async (linkName: string) => {
 
     try {
@@ -47,6 +44,8 @@ export const ProductPage = () => {
       const { data } = await flordLisApi.get('/shop/allProductsByLinkName/' + linkName);
 
       if (data.ok && data.productsByLinkName?.length > 0) {
+        console.log(data.productsByLinkName);
+
         setProducts(data.productsByLinkName);
         setIsLoaded(true);
       }
@@ -85,7 +84,7 @@ export const ProductPage = () => {
           ?
           <section className="productBuy__container">
             <div className="productBuy__nav">
-              <span className="productBuy__nav__back" onClick={goBack} ><i className='fa-solid fa-chevron-left'>Volver</i></span>
+              <span className="productBuy__nav__back" onClick={goBack} ><i className='fa-solid fa-chevron-left'> Volver</i></span>
             </div>
             <div className="productBuy__information">
               <div className="productBuy__left">
@@ -93,8 +92,19 @@ export const ProductPage = () => {
               </div>
               <div className="productBuy__right">
                 <h2 className="productBuy__title">{products[0].name}</h2>
-                {/* <h4 className="productBuy__category">{products[0].}</h4> */}
                 <h1 className="productBuy__price">{formatter.format(products[0].price)}</h1>
+                {
+                  (products[0].color != null)
+                    ?
+                    <div className="prodcutBuy__colors">
+                      <div className="color color-white active-color"></div>
+                      <div className="color color-black"></div>
+                      <div className="color color-yellow"></div>
+                      <div className="color color-blue"></div>
+                      <div className="color color-red"></div>
+                    </div>
+                    : null
+                }
                 <p className="productBuy__description">{products[0].description}</p>
                 <div className="productBuy__AddToCartAndUnits">
                   <button className="productBuy__AddToCart">Añadir a la cesta</button>

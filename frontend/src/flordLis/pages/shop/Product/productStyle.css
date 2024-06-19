@@ -103,3 +103,49 @@
     color: #aedaa6;
     cursor: pointer;
 }
+
+.prodcutBuy__colors {
+    display: flex;
+    flex-direction: row;
+}
+
+.color {
+    margin-top: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: none;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+    margin-right: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+.color-black {
+    background-color: #242424;
+}
+.color-blue {
+    background-color: #085ea0;
+}
+.color-yellow {
+    background-color: #c0b50d;
+}
+.color-red {
+    background-color: #8b0516;
+}
+.color-white {
+    background-color: #ededed;
+}
+.color:hover {
+    box-shadow: 0 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+.active-color {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
